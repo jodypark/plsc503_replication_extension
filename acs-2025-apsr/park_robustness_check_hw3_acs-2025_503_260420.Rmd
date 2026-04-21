@@ -1,6 +1,6 @@
 ---
-title: "PLSC 503: Homework 2"
-subtitle: "Extension to Acs (2025): Mapping the Political Contours of the Regulatory State: Dynamic Estimates of Agency Ideal Points"
+title: "Robustness Checks for Acs (2025): Mapping the Political Contours of the Regulatory State: Dynamic Estimates of Agency Ideal Points"
+subtitle: "PLSC 503: Homework 3"
 author: "Jody Park"
 date: "`r Sys.Date()`"
 output:
@@ -55,6 +55,7 @@ header-includes:
 ---
 
 ```{r setup, include=FALSE}
+options(knitr.table.format = "latex")
 # clear all objects & free up memory if needed
 rm(list = ls())
 
@@ -72,7 +73,7 @@ knitr::opts_knit$set(allow_duplicate_labels = TRUE)
 
 # set root directory to the project folder
 # make sure whether the project folder exists in the folder
-knitr::opts_knit$set(root.dir = here::here()) 
+knitr::opts_knit$set(root.dir = normalizePath("."))
 
 # check working directory
 # getwd()
@@ -171,7 +172,7 @@ theme_set(theme_minimal(base_size = 14))
 
 - **Repository Links**:  
 
-  - [Dropbox folder](https://www.dropbox.com/scl/fo/6b5w3zznokywvmlox3dt2/ANIInPxRVHuL4ys3Jqr0JX0?rlkey=3a2d8uvvkcfmbxoldhr91jobu&st=ucxm71yq&dl=0); current code and data for this paper are in the *acs-2025-apsr* subfolder.
+  - [Dropbox folder](https://www.dropbox.com/scl/fo/fd8lfsrgua0ffxo3jncql/ALRWnyH1AW9au-xT7ztn2wk?rlkey=dl6drpt0kibpaete5r9bb5mgw&st=d0h6i6bv&dl=0); current code and data for this paper are in the *acs-2025-apsr* subfolder.
 
   - [GitHub repository for this project](https://github.com/jodypark/plsc503_replication_extension_fazekas2023/tree/main/acs-2025-apsr)
 
@@ -183,7 +184,8 @@ theme_set(theme_minimal(base_size = 14))
 By analyzing the ideological positions of regulatory agencies over time, the paper provides insights into how agency ideology shapes regulatory behavior and how it interacts with political dynamics. The core contribution of the paper is to offer a comprehensive mapping of the political contours of the regulatory state, shedding light on the ideological underpinnings of regulatory activity and its implications for policy outcomes.
 
 I extend the analysis by examining how agency ideology moderates the effects of political party contributions on favoritism in federal contracting, using the dynamic ideal point estimates from @acsmapping2025. Merging this agency ideology data with @fazekasagency2023 allows a direct test of whether ideological alignment between the president and an agency amplifies the returns to political contributions in procurement.
-
+For this homework, I conduct three robustness checks to evaluate how much confidence the matched procurement sample can support: (1) a bootstrap to assess small-sample uncertainty, (2) a leave-one-agency-out sensitivity analysis to identify influential cases, and (3) a power-style simulation to evaluate the likelihood of detecting true effects given the sample size and effect sizes observed in the matched panel. 
+These checks help determine whether the procurement results are precise enough to support substantive claims about the role of agency ideology in shaping procurement outcomes.
 
 \bigskip
 
@@ -357,7 +359,9 @@ print(f4rep)
 
 # optional file export (keep the author's code)
 dir.create("results", showWarnings = FALSE, recursive = TRUE)
+dir.create("results/figure", showWarnings = FALSE, recursive = TRUE)
 ggsave("results/figure4.pdf", plot = f4rep, width = 10, height = 7, units = "in")
+ggsave("results/figure/f4repacs.png", plot = f4rep, width = 10, height = 7, dpi = 300)
 
 ```
 
@@ -465,6 +469,7 @@ t1rep <- knitr::kable(
   )
 
 t1rep
+t1rep %>% save_kable("results/table/t1repacs.tex")
 
 ```
 
@@ -810,7 +815,8 @@ t2rep <- c(
   "\\end{table}"
 )
 
-writeLines(t2rep, "results/table2.tex")
+dir.create("results/table", showWarnings = FALSE, recursive = TRUE)
+writeLines(t2rep, "results/table/t2repacs.tex")
 cat(t2rep, sep = "\n")
 
 ```
@@ -917,6 +923,7 @@ ta1rep_obj <- knitr::kable(
   )
 
 ta1rep_obj
+ta1rep_obj %>% save_kable("results/table/ta1repacs.tex")
 cat("\n\\FloatBarrier\n")
 
 ```
@@ -927,122 +934,52 @@ Table \@ref(tab:ta1repacs) reproduces the appendix-style agency-by-administratio
 \newpage
 
 
+
 # 3. Methodological Extension
 
 ## Why this method is necessary
 
-The ACS validation model uses regulatory activity (final-rule page length) as the dependent variable to measure agency productivity. 
+Section 2 shows that I can reproduce the main ACS validation results with the original agency-administration panel. My [HW2 extension](https://www.dropbox.com/scl/fi/uwsy111lt5x67ssn24vnr/park_robustness_check_acs-2025_503_260419.pdf?rlkey=8nb7r5caignkz9j09i8cj4yv4&st=1z9u4b4n&dl=0), however, depends on a much smaller matched ACS-Fazekas panel. The ACS replication in Section 2 uses an agency-administration panel with `N = 276`, which is large enough to estimate the negative binomial validation model in @acsmapping2025 with relatively stable coefficients. 
+Once I merge ACS ideological distance with the contracting data, the effective sample size falls to 48 agency-administration observations in the main procurement models, 42 in the ordered logit, and 22 in the agency-level follow-up. The matched procurement panel contains 25 distinct agencies, and only 22 remain once the agency-independence categories needed for the ordered-logit checks are imposed. 
 
-For this homework, I shift the dependent variable to agency outcomes from @fazekasagency2023, specifically donation and contracting outcomes, while retaining the ACS ideological distance measure as the main explanatory variable. 
-This directly tests whether president-agency ideological alignment is associated with *who receives contracts* and *how politically active those contractors are*, not only with how many pages of rules are produced as a measure of agency productivity.
+That drop in sample size creates a different inferential problem than the one emphasized in the original ACS article. The concern is no longer whether the model form is correct. Instead, the concern is whether coefficient instability reflects substantive heterogeneity or simply limited information. With a sample this small, null or mixed findings may be low-power results rather than strong evidence against the extension. 
 
 ## How the method improves the paper
 
-This extension keeps the ACS measure of president-agency ideological distance but changes the outcome from rule production to procurement outcomes. In the main extension models, I also add ACS-side controls for rule volume, significant rules, and review rates (`n_rules`, `n_sig_rules`, `review_rate`) so the estimated relationship is less likely to reflect simple differences in regulatory workload.
+For HW3, I keep the HW2 extension design and reframe the robustness question around sample size and power. I use three checks. First, I bootstrap the key `distance` coefficients in the four procurement models to quantify how much small-sample uncertainty widens the confidence intervals beyond the model-based standard errors. Second, I conduct a leave-one-agency-out sensitivity analysis to determine whether the results are driven by a handful of matched agencies. Third, I run a power-style simulation that projects rejection rates as the effective sample size increases from the current matched panel toward the size of the original ACS replication sample. 
 
-### Extension 1: Logistic Regression on Donation Probability
+These checks do not replace the extension models. They evaluate whether the extension results are fragile because the matched panel is small. This is suitable for HW3 because the sample size problem is already visible in the current write-up, and because the assignment specifically asks for a robustness check that addresses sample size and power. 
 
-@acsmapping2025 establishes that ideological distance between the president and an agency depresses regulatory output. A parallel mechanism operates on the firm side: if firms anticipate that ideologically close agencies are more responsive to political pressure, they donate when distance is small. I test this directly by regressing the binary donation indicator `isDonation` on `distance` using logistic regression with agency fixed effects, following Chapter 13 of @gelman2025:
+### Robustness Check 1: Small-Sample Uncertainty via Bootstrap
 
-$$
-\operatorname{Pr}(\texttt{isDonation}_{ift} = 1) = \operatorname{logit}^{-1}(\alpha + \beta \cdot \texttt{distance}_{at} + \pi_a)
-$$
+The first robustness check resamples agencies with replacement and refits the four procurement models from HW2. This is an agency bootstrap rather than a row bootstrap because the two administration rows for a given agency are not substantively independent. Resampling at the agency level preserves that within-agency structure while still quantifying how much the `distance` coefficient varies under repeated sampling from a small matched panel. 
 
-where $\pi_a$ is an agency fixed effect and $\texttt{distance}_{at}$ is the ACS absolute president-agency ideological distance. A negative $\hat{\beta}$ indicates that firms donate more when the agency's ideology is close to the president, consistent with strategic targeting of politically aligned agencies. This model requires a binomial distribution and logit link; the divide-by-4 rule translates the logit coefficient into an approximate marginal probability effect. The binary nature of `isDonation` makes the negative binomial distribution from ACS Equation (3) inappropriate, so logistic regression is the correct GLM for this outcome.
+If the bootstrap intervals are much wider than the asymptotic intervals from the original models, then the extension results are more fragile than the default standard errors suggest. If the sign remains stable and the bootstrap interval still excludes zero, then the small sample is less threatening to the substantive conclusion.
 
+### Robustness Check 2: Leave-One-Agency-Out Sensitivity
 
-### Extension 2: Poisson versus Negative Binomial Overdispersion Diagnostic
+The second robustness check drops one matched agency at a time and re-estimates the four procurement models. This directly tests whether the extension is driven by a small number of influential agencies. With only 25 matched agencies, a single omitted case can shift the point estimate in a meaningful way. 
 
-Before extending the main results, I validate the negative binomial specification by reestimating ACS Equation (3) with a Poisson model and comparing fit using posterior predictive checks [@gelman2025]. The Poisson distribution is the nested special case of the negative binomial as the reciprocal dispersion parameter $\phi \to \infty$. 
-
-For count outcomes, the Poisson model imposes $\text{sd}(y_i) = \sqrt{\text{E}(y_i)}$, which is violated whenever the data show more variance than this constraint allows. I generate 200 simulated replications $y^{\text{rep}}$ from both fitted models using `simulate()` on frequentist Poisson and negative binomial models fit with `glm` and `MASS::glm.nb`, and compare the frequency of zero counts in replicated data to the observed distribution. 
-
-A Poisson model, which systematically underestimates zeros with replicated zero-rates far below the observed proportion, confirms that overdispersion is real and that the negative binomial specification in @acsmapping2025 is necessary. This diagnostic is independent of the main extension and applies directly to the replication sample.
+The substantive question is: do the coefficients keep the same sign and roughly the same magnitude when each agency is omitted in turn? 
+If the answer is yes, then the extension is not being carried by one or two special cases. If the sign flips or the coefficient collapses toward zero under many omissions, then the extension should be interpreted more cautiously.
 
 
-### Extension 3: Ordered Logistic Regression on Agency Independence Tier
+### Robustness Check 3: Power-Style Simulation
 
-@acsmapping2025 estimates ideal points for agencies that span the full range of organizational independence. A remaining question is whether ideological distance predicts where an agency falls in @fazekasagency2023's four-tier independence hierarchy. I test this using ordered logistic regression, treating `agency_cat2` (1 = most independent, 4 = least independent) as an ordered categorical outcome:
+The third robustness check asks whether the current matched panel is large enough to detect effects of the size observed in HW2. I treat the estimated coefficient and standard error from each procurement model as the starting point for a retrospective design analysis. Then I project what power would look like at the current extension sample size (`N = 48`), a doubled sample (`N = 96`), a four-times larger sample (`N = 192`), and the original ACS replication size (`N = 276`). 
 
-$$
-\operatorname{Pr}(\texttt{agency\_cat}_{a} > k) = \operatorname{logit}^{-1}(\beta \cdot \texttt{distance}_{a} - c_k), \quad k = 1, 2, 3
-$$
+I report power under two assumptions: the observed effect size from the HW2 extension, and a more conservative scenario in which the true effect is only half as large. This check follows the sample-size logic from class: if power remains low even under optimistic assumptions, then coefficient instability is more likely to reflect limited information than a well-estimated null effect.
 
-where $c_k$ are cutpoints estimated alongside $\beta$. 
+## Explanatory Table
 
-@fazekasagency2023's four-tier agency independence hierarchy:
+### Explanatory Table 4. Effective Sample Sizes Across ACS Replication and Extension Models
 
-- (1) `indep. commission & IRC`: most independent agencies
+```{r robustpanelsetup, echo = FALSE, warning = FALSE, error = FALSE, message = FALSE, results='asis', floating = FALSE, tab.pos="H", tab.align="center", tab.cap = "Effective sample sizes across ACS replication and extension models", out.width = "100%"}
 
-- (2) `indep. agency`: independent but not commission-based
-
-- (3) `caninet/exec. dep. and bureau`: agencies with some independence but also more direct presidential oversight
-
-- (4) `caninet/exec. dep., not bureau`: least independent agencies
-
-A negative $\hat{\beta}$ implies that agencies with greater ideological distance from the president tend to occupy more independent tiers, consistent with the institutional logic that independent agencies face less direct presidential oversight. Here, the levels go from 1 (most independent) to 4 (least independent). 
-
-I fit this using `MASS::polr`, which estimates $\beta$ and the cutpoints $c_k$ by maximum likelihood. This model is appropriate because the four tiers are ordered (independence is a latent continuous construct bucketed into discrete categories) but the gaps between tiers are not necessarily equal, which rules out treating `agency_cat` as a continuous dependent variable in OLS.
-
-
-## Explanatory Tables and Figures
-
-```{r extvardefs, echo = FALSE, warning = FALSE, error = FALSE, message = FALSE, results='asis', floating = FALSE, tab.pos="H", tab.align="center", tab.cap = "ACS distance + Fazekas outcomes", out.width = "100%"}
-
-# define variables used in the extension section
-ext_var_defs <- tibble(
-  Variable = c(
-    "distance",
-    "donor_contract_share",
-    "donor_contract_count",
-    "donation_amount",
-    "n_contracts",
-    "n_rules",
-    "n_sig_rules",
-    "review_rate"
-  ),
-  Role = c(
-    "Independent variable (ACS)",
-    "Dependent variable (Fazekas)",
-    "Dependent variable (Fazekas)",
-    "Dependent variable (Fazekas)",
-    "Dependent variable (Fazekas)",
-    "Control / alternative productivity measure (ACS)",
-    "Control / alternative productivity measure (ACS)",
-    "Control / alternative productivity measure (ACS)"
-  ),
-  Definition = c(
-    "Absolute president-agency ideological distance from ACS dynamic estimates",
-    "Share of contracts in agency-admin cell awarded to donor firms",
-    "Count of donor contracts in agency-admin cell",
-    "Total donation amount linked to firms in agency-admin cell",
-    "Total number of contracts in agency-admin cell",
-    "Number of planned rules in ACS estimation data",
-    "Number of significant planned rules in ACS estimation data",
-    "Mean OIRA review indicator in ACS estimation data"
-  )
-)
-
-# print a compact variable-definition table
-kable(
-  ext_var_defs,
-  format = "latex",
-  booktabs = TRUE,
-  caption = "ACS distance + Fazekas outcomes",
-  align = c("l", "l", "l")
-) %>%
-  kable_styling(
-    full_width = FALSE,
-    position = "center",
-    latex_options = c("HOLD_position", "scale_down"),
-    font_size = 9
-  )
-
-```
-
-Table \@ref(tab:extvardefs) defines the merged-variable design used below. The dependent variables are now donation and contracting outcomes from @fazekasagency2023, while ACS ideological distance remains the core predictor.
-
-```{r extbuildpanel, echo = FALSE, warning = FALSE, error = FALSE, message = FALSE, results='asis', floating = FALSE, tab.pos="H", tab.align="center", tab.cap = "Merge diagnostics for ACS-Fazekas extension panel", out.width = "100%"}
+# make sure HW3 output folders exist
+dir.create("results", showWarnings = FALSE, recursive = TRUE)
+dir.create("results/table", showWarnings = FALSE, recursive = TRUE)
+dir.create("results/figure", showWarnings = FALSE, recursive = TRUE)
 
 # standardize agency names before matching
 clean_agency_text <- function(x) {
@@ -1119,9 +1056,7 @@ ext_panel <- faz_ext %>%
     donor_contract_share = mean(donation_dummy, na.rm = TRUE),
     donor_contract_count = sum(donation_dummy, na.rm = TRUE),
     donation_amount = sum(donation_total, na.rm = TRUE),
-    mean_log_donation = mean(log1p(donation_total), na.rm = TRUE),
     unique_firms = n_distinct(pduns),
-    unique_donor_firms = n_distinct(pduns[donation_dummy == 1]),
     .groups = "drop"
   ) %>%
   left_join(
@@ -1130,320 +1065,13 @@ ext_panel <- faz_ext %>%
   ) %>%
   left_join(acs_dynamic_ext, by = c("agency.id", "admin")) %>%
   left_join(acs_prod_ext, by = c("agency.id", "admin")) %>%
-  filter(!is.na(distance))
-
-# merge coverage
-ext_merge_check <- tibble(
-  Metric = c(
-    "Agency-admin rows in Fazekas aggregate (Bush/Obama)",
-    "Rows matched to ACS distance",
-    "Distinct matched agencies",
-    "Mean donor contract share",
-    "Mean contracts per matched agency-admin row"
-  ),
-  Value = c(
-    nrow(faz_ext %>% distinct(agency_name_clean, admin)),
-    nrow(ext_panel),
-    n_distinct(ext_panel$agency.id),
-    mean(ext_panel$donor_contract_share, na.rm = TRUE),
-    mean(ext_panel$n_contracts, na.rm = TRUE)
-  )
-) %>%
-  mutate(
-    Value = ifelse(grepl("Mean", Metric), sprintf("%.3f", Value), as.character(round(Value, 0)))
-  )
-
-# merge diagnostics
-kable(
-  ext_merge_check,
-  format = "latex",
-  booktabs = TRUE,
-  caption = "Merge diagnostics for ACS-Fazekas extension panel",
-  align = c("l", "r")
-) %>%
-  kable_styling(
-    full_width = FALSE,
-    position = "center",
-    latex_options = c("HOLD_position")
-  )
-
-```
-
-
-Table \@ref(tab:extbuildpanel) reports the merge coverage for the new agency-administration panel. The matched panel is the estimation sample used in the extension models below.
-
-```{r extmodeltable, echo = FALSE, warning = FALSE, error = FALSE, message = FALSE, results='asis', floating = FALSE, tab.pos="H", tab.align="center", tab.cap = "ACS distance predicting Fazekas donation and contract outcomes", out.width = "100%"}
-
-stopifnot(exists("ext_panel"), nrow(ext_panel) > 0)
-
-# clean model inputs and fill missing controls
-ext_panel <- ext_panel %>%
+  filter(!is.na(distance)) %>%
   mutate(
     n_contracts = pmax(n_contracts, 1),
     n_rules = replace_na(n_rules, 0),
     n_sig_rules = replace_na(n_sig_rules, 0),
     review_rate = replace_na(review_rate, 0)
   )
-
-# estimate the main extension models
-ext_mods <- list(
-  "Donor contract share" = lm(
-    donor_contract_share ~ distance + log1p(n_rules) + log1p(n_sig_rules) + review_rate + factor(admin),
-    data = ext_panel
-  ),
-  "Donor contract count" = glm.nb(
-    donor_contract_count ~ distance + log1p(n_rules) + log1p(n_sig_rules) + factor(admin) + offset(log(n_contracts)),
-    data = ext_panel
-  ),
-  "Log donation amount" = lm(
-    log1p(donation_amount) ~ distance + log1p(n_rules) + log1p(n_sig_rules) + review_rate + factor(admin),
-    data = ext_panel
-  ),
-  # treat total contracts as a separate count outcome, not a control for donor-linked outcomes
-  "Total contracts" = glm.nb(
-    n_contracts ~ distance + factor(admin),
-    data = ext_panel
-  )
-)
-
-# relabel coefficients for the table
-ext_coef_map <- c(
-  "distance" = "President-Agency Distance",
-  "log1p(n_rules)" = "Log(1 + number of rules)",
-  "log1p(n_sig_rules)" = "Log(1 + significant rules)",
-  "review_rate" = "OIRA review rate",
-  "factor(admin)Obama" = "Obama administration (ref: Bush)"
-)
-
-# the extension regression table
-ext_table <- modelsummary(
-  ext_mods,
-  coef_map = ext_coef_map,
-  statistic = "({std.error})",
-  stars = c("*" = 0.05),
-  fmt = 3,
-  gof_map = tibble::tribble(
-    ~raw,   ~clean,     ~fmt,
-    "nobs", "Num.Obs.", 0
-  ),
-  gof_omit = "AIC|BIC|Log.Lik.|F|RMSE|R2|Adj|Pseudo|Std",
-  output = "kableExtra",
-  title = "ACS distance and Fazekas donation/contract outcomes",
-  escape = FALSE,
-  notes = "Standard errors in parentheses. Unit of analysis is the agency-administration cell.",
-  notes_append = TRUE
-) %>%
-  add_header_above(c(" " = 1, "Dependent variables from Fazekas (2023)" = length(ext_mods)), escape = FALSE) %>%
-  kable_styling(
-    full_width = FALSE,
-    position = "center",
-    latex_options = c("HOLD_position", "scale_down"),
-    font_size = 9
-  )
-
-ext_table
-
-```
-
-Table \@ref(tab:extmodeltable) extends ACS Equation (3) by replacing regulatory activity outcomes with donation and contracting outcomes from @fazekasagency2023. Columns 1 and 3 use `lm` for continuous outcomes, while columns 2 and 4 use `glm.nb` for count outcomes. A negative coefficient on `distance` implies that greater ideological distance is associated with lower donor-linked contracting intensity (or lower donation concentration), conditional on rule-volume controls.
-
-
-```{r extcoefplot, echo = FALSE, warning = FALSE, error = FALSE, message = FALSE, fig.cap = "Distance effect across alternative Fazekas outcomes", fig.pos="H", fig.align="center", out.width = "100%"}
-
-stopifnot(exists("ext_mods"))
-
-# collect the distance coefficient from each model
-ext_coef_plot <- bind_rows(
-  broom::tidy(ext_mods[[1]], conf.int = TRUE) %>% mutate(model = "Donor contract share"),
-  broom::tidy(ext_mods[[2]], conf.int = TRUE) %>% mutate(model = "Donor contract count"),
-  broom::tidy(ext_mods[[3]], conf.int = TRUE) %>% mutate(model = "Log donation amount"),
-  broom::tidy(ext_mods[[4]], conf.int = TRUE) %>% mutate(model = "Total contracts")
-) %>%
-  filter(term == "distance") %>%
-  mutate(model = factor(model, levels = c(
-    "Donor contract share",
-    "Donor contract count",
-    "Log donation amount",
-    "Total contracts"
-  )))
-
-# point estimates with CIs
-ggplot(ext_coef_plot, aes(x = estimate, y = model, xmin = conf.low, xmax = conf.high)) +
-  geom_vline(xintercept = 0, linetype = "dotted") +
-  geom_point() +
-  geom_linerange() +
-  labs(
-    x = "Coefficient on President-Agency Distance",
-    y = "Dependent variable"
-  )
-
-```
-
-Figure \@ref(fig:extcoefplot) compares the `distance` coefficient across multiple dependent-variable definitions. This directly addresses sensitivity to outcome choice, which is one of the main robustness goals for this homework.
-
-\newpage
-
-## Extension 1: Logistic Regression on Donation Probability
-
-```{r ext1logit, echo = FALSE, warning = FALSE, error = FALSE, message = FALSE, results = 'asis', floating = FALSE, tab.pos = "H", tab.align = "center", tab.cap = "Logistic Regression of Donation Probability on Ideological Distance", out.width = "100%"}
-
-stopifnot(exists("faz_ext"), exists("acs_name_ext"), exists("acs_dynamic_ext"))
-
-# merge contract outcomes with ACS distance
-logit_data <- faz_ext %>%
-  left_join(
-    acs_name_ext %>% select(agency_name_clean, agency.id),
-    by = "agency_name_clean"
-  ) %>%
-  left_join(acs_dynamic_ext, by = c("agency.id", "admin")) %>%
-  filter(!is.na(distance), !is.na(donation_dummy))
-
-# estimate baseline and admin-adjusted logits
-m_logit1 <- glm(donation_dummy ~ distance,
-                data = logit_data, family = binomial(link = "logit"))
-m_logit2 <- glm(donation_dummy ~ distance + factor(admin),
-                data = logit_data, family = binomial(link = "logit"))
-
-# the logit regression table
-t7ext <- modelsummary(
-  list("(1) No controls" = m_logit1, "(2) Admin FE" = m_logit2),
-  coef_map = c(
-    "distance"           = "President-Agency Distance",
-    "factor(admin)Obama" = "Obama (ref: Bush)"
-  ),
-  statistic = "({std.error})",
-  stars     = c("*" = 0.05),
-  fmt       = 3,
-  gof_map   = tibble::tribble(
-    ~raw,     ~clean,           ~fmt,
-    "nobs",   "Observations",   0,
-    "logLik", "Log Likelihood", 3
-  ),
-  gof_omit = "AIC|BIC|F|RMSE|R2|Adj|Pseudo|Std|Theta",
-  output   = "kableExtra",
-  title    = "Logistic Regression of Donation Probability on Ideological Distance",
-  escape   = FALSE,
-  notes    = "Standard errors in parentheses. Unit of analysis is the contract.",
-  notes_append = TRUE
-) %>%
-  kable_styling(
-    full_width    = FALSE,
-    position      = "center",
-    latex_options = c("HOLD_position"),
-    font_size     = 10
-  )
-
-t7ext
-
-```
-
-Table \@ref(tab:ext1logit) reports logistic regression coefficients for `donation_dummy` on `distance`. A negative coefficient on `distance` indicates that firms are less likely to donate when ideological distance between the president and the agency is larger, consistent with strategic targeting of politically aligned agencies.
-
-```{r ext1logitplot, echo = FALSE, warning = FALSE, error = FALSE, message = FALSE, fig.cap = "Predicted Probability of Donation by President-Agency Ideological Distance", fig.pos = "H", fig.align = "center", out.width = "80%"}
-
-stopifnot(exists("m_logit2"), exists("logit_data"))
-
-# create a prediction grid over the observed distance range
-dist_seq <- seq(
-  min(logit_data$distance, na.rm = TRUE),
-  max(logit_data$distance, na.rm = TRUE),
-  length.out = 100
-)
-
-# compute predicted probabilities by administration
-pred_df <- bind_rows(
-  tibble(distance = dist_seq, admin = "Bush"),
-  tibble(distance = dist_seq, admin = "Obama")
-) %>%
-  mutate(pred = predict(m_logit2, newdata = ., type = "response"))
-
-# plot the fitted probability curves
-ggplot(pred_df, aes(x = distance, y = pred,
-                    linetype = admin, color = admin)) +
-  geom_line(linewidth = 0.9) +
-  labs(
-    x        = "President-Agency Ideological Distance",
-    y        = "Predicted Pr(Donation = 1)",
-    linetype = "Administration",
-    color    = "Administration"
-  ) +
-  theme_bw() +
-  theme(legend.position = "bottom")
-
-```
-
-Figure \@ref(fig:ext1logitplot) plots the predicted probability of donation as a function of `distance` for Bush and Obama administrations. The downward slope indicates that firms are less likely to donate as ideological distance increases.
-
-\newpage
-
-## Extension 2: Overdispersion Diagnostic
-
-```{r ext2ppc, echo = FALSE, warning = FALSE, error = FALSE, message = FALSE, fig.cap = "Posterior Predictive Check: Proportion of Zeros in Poisson vs. Negative Binomial Replications", fig.pos = "H", fig.align = "center", out.width = "90%"}
-
-stopifnot(exists("y_acs"))
-
-# prepare the ACS count outcome used in the original validation model
-y_ppc <- y_acs %>%
-  filter(!is.na(n.pages.final.rule.adj), !is.na(distance),
-         !is.na(se), se > 0) %>%
-  mutate(outcome = as.integer(round(n.pages.final.rule.adj)))
-
-# fit Poisson and negative binomial versions of the same model
-m_pois_ppc <- glm(
-  outcome ~ distance + agency.id,
-  data    = y_ppc,
-  family  = poisson(link = "log"),
-  weights = 1 / y_ppc$se^2
-)
-
-m_nb_ppc <- MASS::glm.nb(
-  outcome ~ distance + agency.id,
-  data    = y_ppc,
-  weights = 1 / y_ppc$se^2
-)
-
-# simulate replicated datasets for the zero-rate comparison
-set.seed(503)
-nsims     <- 200
-pois_sims <- simulate(m_pois_ppc, nsim = nsims)
-nb_sims   <- simulate(m_nb_ppc,   nsim = nsims)
-
-obs_zero  <- mean(y_ppc$outcome == 0, na.rm = TRUE)
-pois_zero <- vapply(pois_sims, function(s) mean(s == 0, na.rm = TRUE), numeric(1))
-nb_zero   <- vapply(nb_sims,   function(s) mean(s == 0, na.rm = TRUE), numeric(1))
-
-# combine simulated zero-rates for plotting
-ppc_df <- bind_rows(
-  tibble(zero_rate = pois_zero, Model = "Poisson"),
-  tibble(zero_rate = nb_zero,   Model = "Negative Binomial")
-)
-
-# figure: observed vs simulated zero-rates
-ggplot(ppc_df, aes(x = zero_rate, fill = Model)) +
-  geom_histogram(alpha = 0.6, bins = 25, position = "identity") +
-  geom_vline(xintercept = obs_zero, linetype = "dashed", linewidth = 0.9) +
-  scale_fill_manual(values = c("Poisson" = "salmon",
-                               "Negative Binomial" = "steelblue")) +
-  labs(
-    x       = "Proportion of zeros in replicated data",
-    y       = "Count of simulations",
-    fill    = "Model",
-    caption = "Dashed line: observed proportion of zeros in ACS data"
-  ) +
-  theme_bw() +
-  theme(legend.position = "bottom")
-
-```
-
-Figure \@ref(fig:ext2ppc) compares the proportion of zeros in 200 simulated datasets from Poisson and negative binomial models to the observed zero-rate (dashed line). The Poisson model systematically underestimates the proportion of zeros, while the negative binomial model generates replications closer to the observed rate, validating the negative binomial specification in @acsmapping2025.
-
-\newpage
-
-## Extension 3: Ordered Logistic Regression on Agency Independence Tier
-
-```{r ext3ordlogit, echo = FALSE, warning = FALSE, error = FALSE, message = FALSE, results = 'asis', floating = FALSE, tab.pos = "H", tab.align = "center", tab.cap = "Ordered Logistic Regression of Agency Independence Tier on Ideological Distance", out.width = "100%"}
-
-stopifnot(exists("ext_panel"), exists("clean_agency_text"))
 
 # recover agency independence categories from the Fazekas data
 faz_cat_lookup <- read_csv(
@@ -1463,63 +1091,19 @@ indep_levels <- c(
   "cabinet/exec. dep. (not bureau)"
 )
 
-# merge categories onto the extension panel
+# merge categories for ordered logit variants
 ext_panel_cat <- ext_panel %>%
   left_join(faz_cat_lookup, by = "agency_name_clean") %>%
   filter(!is.na(agency_cat2), !is.na(distance)) %>%
-  mutate(agency_cat_ord = factor(agency_cat2,
-                                  levels = indep_levels,
-                                  ordered = TRUE))
-
-# estimate the ordered logit model
-m_ordlogit <- MASS::polr(
-  agency_cat_ord ~ distance,
-  data   = ext_panel_cat,
-  Hess   = TRUE,
-  method = "logistic"
-)
-
-# the ordered logit table
-t8ext <- modelsummary(
-  list("Agency Independence Tier" = m_ordlogit),
-  coef_map  = c("distance" = "President-Agency Distance"),
-  coef_omit = "\\|",
-  statistic = "({std.error})",
-  stars     = c("*" = 0.05),
-  fmt       = 3,
-  gof_map   = tibble::tribble(
-    ~raw,     ~clean,           ~fmt,
-    "nobs",   "Observations",   0,
-    "logLik", "Log Likelihood", 3
-  ),
-  gof_omit = "AIC|BIC|F|RMSE|R2|Adj|Pseudo|Std|Theta",
-  output   = "kableExtra",
-  title    = "Ordered Logistic Regression of Agency Independence Tier on Ideological Distance",
-  escape   = FALSE,
-  notes    = "Standard errors in parentheses. Outcome ordered from most independent to least independent. Cutpoints omitted."
-) %>%
-  kable_styling(
-    full_width    = FALSE,
-    position      = "center",
-    latex_options = c("hold_position", "scale_down"),
-    font_size     = 9
+  mutate(
+    agency_cat_ord = factor(
+      agency_cat2,
+      levels = indep_levels,
+      ordered = TRUE
+    )
   )
 
-t8ext
-
-```
-
-Table \@ref(tab:ext3ordlogit) reports the ordered logistic coefficient for `distance` on the four-tier agency independence scale, from most independent (level 1: indep. commission and IRC) to least independent (level 4: cabinet department). A negative $\hat{\beta}$ implies that agencies with greater ideological distance from the president tend to fall into more independent (lower-numbered) tiers, consistent with the institutional logic that structurally independent agencies face less direct presidential alignment pressure. A null result would indicate that ideological distance and formal independence are orthogonal properties in this sample.
-
-## Extension 3a: Agency-Level Alternative
-
-Extension 3a re-estimates Extension 3 after collapsing the panel to one row per agency, replacing administration-specific `distance` with each agency's mean ideological distance across administrations. The motivation is statistical: agency independence tier is a fixed agency-level characteristic that does not vary across administrations, so treating each agency-administration row as an independent observation inflates the effective sample size in Extension 3. The agency-level specification corrects this by using the natural unit of the outcome variable. If the coefficient on mean distance is negative and close in magnitude to Extension 3, the cross-administration result is more credible as a stable cross-agency pattern rather than an artifact of repeated observations.
-
-```{r ext3aagencylevel, echo = FALSE, warning = FALSE, error = FALSE, message = FALSE, results = 'asis', floating = FALSE, tab.pos = "H", tab.align = "center", tab.cap = "Agency-Level Ordered Logistic Regression of Independence Tier on Mean Ideological Distance", out.width = "100%"}
-
-stopifnot(exists("ext_panel_cat"))
-
-# collapse to one row per agency
+# collapse to one row per agency for the smallest follow-up model
 ext_panel_agency <- ext_panel_cat %>%
   group_by(agency.id, agency_name_clean, agency_cat2) %>%
   summarize(
@@ -1535,92 +1119,490 @@ ext_panel_agency <- ext_panel_cat %>%
     )
   )
 
-# estimate the agency-level ordered logit
-m_ordlogit_agency <- MASS::polr(
-  agency_cat_ord ~ mean_distance,
-  data   = ext_panel_agency,
-  Hess   = TRUE,
-  method = "logistic"
+# fit the four baseline procurement models from HW2
+ext_mods <- list(
+  "Donor contract share" = lm(
+    donor_contract_share ~ distance + log1p(n_rules) + log1p(n_sig_rules) + review_rate + factor(admin),
+    data = ext_panel
+  ),
+  "Donor contract count" = glm.nb(
+    donor_contract_count ~ distance + log1p(n_rules) + log1p(n_sig_rules) + factor(admin) + offset(log(n_contracts)),
+    data = ext_panel
+  ),
+  "Log donation amount" = lm(
+    log1p(donation_amount) ~ distance + log1p(n_rules) + log1p(n_sig_rules) + review_rate + factor(admin),
+    data = ext_panel
+  ),
+  "Total contracts" = glm.nb(
+    n_contracts ~ distance + factor(admin),
+    data = ext_panel
+  )
 )
 
-# table 9
-t9extwide <- modelsummary(
-  list("Agency Independence Tier" = m_ordlogit_agency),
-  coef_map  = c("mean_distance" = "Mean President-Agency Distance"),
-  coef_omit = "\\|",
-  statistic = "({std.error})",
-  stars     = c("*" = 0.05),
-  fmt       = 3,
-  gof_map   = tibble::tribble(
-    ~raw,     ~clean,         ~fmt,
-    "nobs",   "Observations", 0
+# compact sample-size overview table
+sample_size_overview <- tibble(
+  Model = c(
+    "ACS replication Table 2",
+    "HW3 matched procurement panel",
+    "Ordered logit extension",
+    "Agency-level ordered logit"
   ),
-  gof_omit = "AIC|BIC|F|RMSE|R2|Adj|Pseudo|Std|Theta|Log.Lik",
-  output   = "kableExtra",
-  title    = "Agency-Level Ordered Logistic Regression of Independence Tier on Mean Ideological Distance",
-  escape   = FALSE,
-  notes    = "Standard errors in parentheses. Outcome ordered from most independent to least independent. One row per agency."
+  Unit = c(
+    "Agency-administration",
+    "Agency-administration",
+    "Agency-administration",
+    "Agency"
+  ),
+  `Num.Obs.` = c(
+    n_agency_admin,
+    nrow(ext_panel),
+    nrow(ext_panel_cat),
+    nrow(ext_panel_agency)
+  ),
+  `Distinct agencies` = c(
+    n_distinct(y_acs$agency.id),
+    n_distinct(ext_panel$agency.id),
+    n_distinct(ext_panel_cat$agency.id),
+    n_distinct(ext_panel_agency$agency.id)
+  )
+)
+
+sample_kbl <- kable(
+  sample_size_overview,
+  format = "latex",
+  booktabs = TRUE,
+  caption = "Effective sample sizes across ACS replication and extension models",
+  align = c("l", "l", "r", "r")
 ) %>%
   kable_styling(
-    full_width    = FALSE,
-    position      = "center",
-    latex_options = c("hold_position", "scale_down"),
-    font_size     = 9
+    full_width = FALSE,
+    position = "center",
+    latex_options = c("HOLD_position")
   )
 
-t9extwide
+sample_kbl
+sample_kbl %>% save_kable("results/table/sample_size_overview_hw3.tex")
 
 ```
-Table \@ref(tab:ext3aagencylevel) reports the same ordered-logit idea as Table \@ref(tab:ext3ordlogit), but with the unit of analysis collapsed to the agency level. This version is substantively closer to the institutional outcome because agency independence tier does not vary across administrations. A negative coefficient on mean distance implies that agencies further from the president tend to fall into more independent tiers.
 
-\FloatBarrier
+Table \@ref(tab:robustpanelsetup) shows the core inferential problem motivating HW3. The original ACS replication uses 276 agency-administration observations, but the matched procurement extension falls to 48 rows, and the ordered-logit follow-up models shrink further to 42 and 22. This large drop in effective sample size is the basis for the robustness checks below.
+
+## Robustness Check 1. Small-Sample Uncertainty via Bootstrap
+
+```{r robustboot, echo = FALSE, warning = FALSE, error = FALSE, message = FALSE, results='asis', floating = FALSE, tab.pos="H", tab.align="center", tab.cap = "Bootstrap uncertainty for procurement extension coefficients", out.width = "100%"}
+
+stopifnot(exists("ext_panel"), exists("ext_mods"))
+
+# agency bootstrap helper
+resample_agencies <- function(data) {
+  ids <- unique(data$agency.id)
+  draw <- sample(ids, size = length(ids), replace = TRUE)
+  map2_dfr(draw, seq_along(draw), ~ {
+    data %>%
+      filter(agency.id == .x) %>%
+      mutate(boot_cluster = .y)
+  })
+}
+
+# fit each baseline model on a resampled panel
+fit_boot_models <- function(data) {
+  list(
+    share = tryCatch(
+      lm(donor_contract_share ~ distance + log1p(n_rules) + log1p(n_sig_rules) + review_rate + factor(admin), data = data),
+      error = function(e) NULL
+    ),
+    count = tryCatch(
+      suppressWarnings(glm.nb(donor_contract_count ~ distance + log1p(n_rules) + log1p(n_sig_rules) + factor(admin) + offset(log(n_contracts)), data = data)),
+      error = function(e) NULL
+    ),
+    amount = tryCatch(
+      lm(log1p(donation_amount) ~ distance + log1p(n_rules) + log1p(n_sig_rules) + review_rate + factor(admin), data = data),
+      error = function(e) NULL
+    ),
+    contracts = tryCatch(
+      suppressWarnings(glm.nb(n_contracts ~ distance + factor(admin), data = data)),
+      error = function(e) NULL
+    )
+  )
+}
+
+# collect the baseline estimates and asymptotic intervals
+baseline_summary <- bind_rows(
+  broom::tidy(ext_mods[[1]], conf.int = TRUE) %>% mutate(model = "Donor contract share"),
+  broom::tidy(ext_mods[[2]], conf.int = TRUE) %>% mutate(model = "Donor contract count"),
+  broom::tidy(ext_mods[[3]], conf.int = TRUE) %>% mutate(model = "Log donation amount"),
+  broom::tidy(ext_mods[[4]], conf.int = TRUE) %>% mutate(model = "Total contracts")
+) %>%
+  filter(term == "distance") %>%
+  transmute(
+    model,
+    estimate,
+    std.error,
+    asym_lo = conf.low,
+    asym_hi = conf.high
+  )
+
+# bootstrap the distance coefficient by resampling agencies
+set.seed(503)
+boot_reps <- 199
+boot_draws <- vector("list", boot_reps)
+
+for (b in seq_len(boot_reps)) {
+  boot_dat <- resample_agencies(ext_panel)
+  boot_fit <- fit_boot_models(boot_dat)
+  boot_draws[[b]] <- tibble(
+    rep = b,
+    model = c("Donor contract share", "Donor contract count", "Log donation amount", "Total contracts"),
+    estimate = c(
+      if (!is.null(boot_fit$share)) coef(boot_fit$share)[["distance"]] else NA_real_,
+      if (!is.null(boot_fit$count)) coef(boot_fit$count)[["distance"]] else NA_real_,
+      if (!is.null(boot_fit$amount)) coef(boot_fit$amount)[["distance"]] else NA_real_,
+      if (!is.null(boot_fit$contracts)) coef(boot_fit$contracts)[["distance"]] else NA_real_
+    )
+  )
+}
+
+boot_draws <- bind_rows(boot_draws)
+
+boot_summary_raw <- boot_draws %>%
+  group_by(model) %>%
+  summarize(
+    boot_lo = quantile(estimate, 0.025, na.rm = TRUE),
+    boot_hi = quantile(estimate, 0.975, na.rm = TRUE),
+    boot_sd = sd(estimate, na.rm = TRUE),
+    usable_reps = sum(!is.na(estimate)),
+    .groups = "drop"
+  ) %>%
+  left_join(baseline_summary, by = "model")
+
+boot_summary <- boot_summary_raw %>%
+  mutate(
+    Estimate = sprintf("%.3f", estimate),
+    `Asymptotic 95\\% CI` = sprintf("[%.3f, %.3f]", asym_lo, asym_hi),
+    `Bootstrap 95\\% CI` = sprintf("[%.3f, %.3f]", boot_lo, boot_hi),
+    `Bootstrap SD` = sprintf("%.3f", boot_sd),
+    `Usable reps` = usable_reps
+  ) %>%
+  select(model, Estimate, `Asymptotic 95\\% CI`, `Bootstrap 95\\% CI`, `Bootstrap SD`, `Usable reps`)
+
+boot_kbl <- kable(
+  boot_summary,
+  format = "latex",
+  booktabs = TRUE,
+  caption = "Bootstrap uncertainty for procurement extension coefficients",
+  col.names = c("Model", "Estimate", "Asymptotic 95\\% CI", "Bootstrap 95\\% CI", "Bootstrap SD", "Usable reps"),
+  align = c("l", "r", "l", "l", "r", "r"),
+  escape = FALSE
+) %>%
+  kable_styling(
+    full_width = FALSE,
+    position = "center",
+    latex_options = c("HOLD_position", "scale_down"),
+    font_size = 9
+  )
+
+boot_kbl
+boot_kbl %>% save_kable("results/table/bootstrap_uncertainty_hw3.tex")
+
+```
+
+Table \@ref(tab:robustboot) compares the model-based and bootstrap uncertainty around the `distance` coefficient in the four procurement models. If the bootstrap intervals are materially wider than the asymptotic intervals, then the matched extension sample is not large enough for the default standard errors to tell the full uncertainty story.
+
+```{r fig-robustboot, echo = FALSE, warning = FALSE, error = FALSE, message = FALSE, fig.cap = "Asymptotic versus bootstrap confidence intervals for distance coefficients", fig.pos="H", fig.align="center", out.width = "100%"}
+
+stopifnot(exists("baseline_summary"), exists("boot_summary_raw"))
+
+# compare asymptotic and bootstrap intervals visually
+boot_plot_df <- baseline_summary %>%
+  select(model, estimate, asym_lo, asym_hi) %>%
+  pivot_longer(cols = c(asym_lo, asym_hi), names_to = "bound", values_to = "value")
+
+boot_plot_df <- bind_rows(
+  baseline_summary %>%
+    transmute(model, estimate, lo = asym_lo, hi = asym_hi, interval = "Asymptotic"),
+  boot_summary_raw %>%
+    transmute(model, estimate, lo = boot_lo, hi = boot_hi, interval = "Bootstrap")
+) %>%
+  mutate(
+    model = factor(model, levels = c(
+      "Donor contract share",
+      "Donor contract count",
+      "Log donation amount",
+      "Total contracts"
+    )),
+    interval = factor(interval, levels = c("Asymptotic", "Bootstrap"))
+  )
+
+ggplot(boot_plot_df,
+       aes(x = estimate, y = model, xmin = lo, xmax = hi, color = interval)) +
+  geom_vline(xintercept = 0, linetype = "dotted") +
+  geom_pointrange(position = position_dodge(width = 0.55)) +
+  labs(
+    x = "Coefficient on President-Agency Distance",
+    y = "Dependent variable",
+    color = "Interval type"
+  ) +
+  scale_color_manual(values = c("Asymptotic" = "steelblue", "Bootstrap" = "salmon")) +
+  theme_bw() +
+  theme(legend.position = "bottom")
+
+ggsave("results/figure/bootstrap_uncertainty_hw3.png", width = 7, height = 4.5, dpi = 300)
+
+```
+
+Figure \@ref(fig:fig-robustboot) visualizes the same comparison. The distance coefficient is most stable when both the asymptotic and bootstrap intervals remain on the same side of zero. Wider bootstrap intervals indicate that the small matched sample adds uncertainty not obvious from the default model output alone.
+
+\newpage
+
+## Robustness Check 2. Leave-One-Agency-Out Sensitivity
+
+```{r robustloo, echo = FALSE, warning = FALSE, error = FALSE, message = FALSE, results='asis', floating = FALSE, tab.pos="H", tab.align="center", tab.cap = "Leave-one-agency-out sensitivity summary", out.width = "100%"}
+
+stopifnot(exists("ext_panel"), exists("baseline_summary"))
+
+# re-estimate the four models dropping one matched agency at a time
+omit_ids <- sort(unique(ext_panel$agency.id))
+
+loo_results <- map_dfr(omit_ids, function(drop_id) {
+  d <- ext_panel %>% filter(agency.id != drop_id)
+  fits <- fit_boot_models(d)
+  tibble(
+    omitted_agency = drop_id,
+    model = c("Donor contract share", "Donor contract count", "Log donation amount", "Total contracts"),
+    estimate = c(
+      if (!is.null(fits$share)) coef(fits$share)[["distance"]] else NA_real_,
+      if (!is.null(fits$count)) coef(fits$count)[["distance"]] else NA_real_,
+      if (!is.null(fits$amount)) coef(fits$amount)[["distance"]] else NA_real_,
+      if (!is.null(fits$contracts)) coef(fits$contracts)[["distance"]] else NA_real_
+    )
+  )
+})
+
+loo_summary <- loo_results %>%
+  left_join(baseline_summary %>% select(model, full_est = estimate), by = "model") %>%
+  group_by(model, full_est) %>%
+  summarize(
+    min_est = min(estimate, na.rm = TRUE),
+    max_est = max(estimate, na.rm = TRUE),
+    sd_est = sd(estimate, na.rm = TRUE),
+    share_same_sign = mean(sign(estimate) == sign(full_est), na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  mutate(
+    `Full estimate` = sprintf("%.3f", full_est),
+    `LOO range` = sprintf("[%.3f, %.3f]", min_est, max_est),
+    `LOO SD` = sprintf("%.3f", sd_est),
+    `Share same sign` = sprintf("%.2f", share_same_sign)
+  ) %>%
+  select(model, `Full estimate`, `LOO range`, `LOO SD`, `Share same sign`)
+
+loo_kbl <- kable(
+  loo_summary,
+  format = "latex",
+  booktabs = TRUE,
+  caption = "Leave-one-agency-out sensitivity summary",
+  align = c("l", "r", "l", "r", "r")
+) %>%
+  kable_styling(
+    full_width = FALSE,
+    position = "center",
+    latex_options = c("HOLD_position"),
+    font_size = 9
+  )
+
+loo_kbl
+loo_kbl %>% save_kable("results/table/leave_one_out_hw3.tex")
+
+```
+
+Table \@ref(tab:robustloo) summarizes how much the `distance` coefficient changes when one agency is omitted at a time. The most reassuring case is when the range is narrow and the sign remains the same across nearly all leave-one-out estimates. Wider ranges and sign reversals indicate that the result is being carried by a small number of agencies.
+
+```{r fig-robustloo, echo = FALSE, warning = FALSE, error = FALSE, message = FALSE, fig.cap = "Leave-one-agency-out dispersion in distance coefficients", fig.pos="H", fig.align="center", out.width = "100%"}
+
+stopifnot(exists("loo_results"), exists("baseline_summary"))
+
+loo_plot_df <- loo_results %>%
+  left_join(baseline_summary %>% select(model, full_est = estimate), by = "model") %>%
+  mutate(
+    model = factor(model, levels = c(
+      "Donor contract share",
+      "Donor contract count",
+      "Log donation amount",
+      "Total contracts"
+    ))
+  )
+
+ggplot(loo_plot_df, aes(x = estimate, y = model)) +
+  geom_vline(aes(xintercept = full_est), data = distinct(loo_plot_df, model, full_est),
+             linetype = "dashed", color = "red") +
+  geom_jitter(height = 0.12, width = 0, alpha = 0.65, color = "grey30") +
+  labs(
+    x = "Leave-one-agency-out coefficient on distance",
+    y = "Dependent variable"
+  ) +
+  theme_bw()
+
+ggsave("results/figure/leave_one_out_hw3.png", width = 7, height = 4.5, dpi = 300)
+
+```
+
+Figure \@ref(fig:fig-robustloo) shows the full distribution of leave-one-agency-out estimates. The dashed red line is the full-sample coefficient. Tight clusters around that line indicate stable results. Wide clouds or points crossing zero indicate that the small matched panel is sensitive to which agencies are included.
+
+\newpage
+
+## Robustness Check 3. Power-Style Simulation
+
+```{r robustpower, echo = FALSE, warning = FALSE, error = FALSE, message = FALSE, results='asis', floating = FALSE, tab.pos="H", tab.align="center", tab.cap = "Power-style simulation for the matched procurement panel", out.width = "100%"}
+
+stopifnot(exists("baseline_summary"), exists("ext_panel"))
+
+# simulate retrospective power, Type S, and Type M errors for projected sample sizes
+retro_sim <- function(beta_true, se_target, nsim = 5000, alpha = 0.05) {
+  if (is.na(beta_true) || is.na(se_target) || se_target <= 0) {
+    return(tibble(power = NA_real_, type_s = NA_real_, type_m = NA_real_))
+  }
+  z_crit <- qnorm(1 - alpha / 2)
+  draws <- rnorm(nsim, mean = beta_true, sd = se_target)
+  sig <- abs(draws / se_target) > z_crit
+  power <- mean(sig)
+  if (sum(sig) == 0 || abs(beta_true) < 1e-10) {
+    type_s <- NA_real_
+    type_m <- NA_real_
+  } else {
+    type_s <- mean(sign(draws[sig]) != sign(beta_true))
+    type_m <- mean(abs(draws[sig] / beta_true))
+  }
+  tibble(power = power, type_s = type_s, type_m = type_m)
+}
+
+# evaluate projected power under two assumptions about the true effect size
+n_current <- nrow(ext_panel)
+n_targets <- c(48, 96, 192, 276)
+assumption_scale <- c("Observed effect" = 1, "Half observed effect" = 0.5)
+
+power_grid <- crossing(
+  baseline_summary %>% select(model, estimate, std.error),
+  assumption = names(assumption_scale),
+  target_n = n_targets
+) %>%
+  mutate(
+    scale = unname(assumption_scale[assumption]),
+    beta_true = estimate * scale,
+    se_target = std.error * sqrt(n_current / target_n)
+  ) %>%
+  rowwise() %>%
+  mutate(stats = list(retro_sim(beta_true, se_target))) %>%
+  unnest(stats) %>%
+  ungroup()
+
+# summarize current-sample power for the table
+power_table <- power_grid %>%
+  filter(target_n == n_current) %>%
+  mutate(
+    Power = sprintf("%.3f", power),
+    `Type S` = ifelse(is.na(type_s), "NA", sprintf("%.3f", type_s)),
+    `Type M` = ifelse(is.na(type_m), "NA", sprintf("%.3f", type_m))
+  ) %>%
+  select(model, assumption, Power, `Type S`, `Type M`)
+
+power_kbl <- kable(
+  power_table,
+  format = "latex",
+  booktabs = TRUE,
+  caption = "Power-style simulation for the matched procurement panel",
+  col.names = c("Model", "Assumption", "Power", "Type S", "Type M"),
+  align = c("l", "l", "r", "r", "r")
+) %>%
+  kable_styling(
+    full_width = FALSE,
+    position = "center",
+    latex_options = c("HOLD_position"),
+    font_size = 9
+  )
+
+power_kbl
+power_kbl %>% save_kable("results/table/power_simulation_hw3.tex")
+
+```
+
+Table \@ref(tab:robustpower) reports the power-style simulation at the current matched sample size. Power is shown under two assumptions: the observed HW2 effect size and a more conservative half-effect scenario. Type S is the probability of estimating the wrong sign conditional on statistical significance, and Type M is the exaggeration ratio conditional on significance. High Type M values indicate that significant results from a small sample are likely to overstate the true effect.
+
+```{r fig-robustpower, echo = FALSE, warning = FALSE, error = FALSE, message = FALSE, fig.cap = "Projected power as the matched sample size grows", fig.pos="H", fig.align="center", out.width = "100%"}
+
+stopifnot(exists("power_grid"))
+
+power_plot_df <- power_grid %>%
+  mutate(
+    model = factor(model, levels = c(
+      "Donor contract share",
+      "Donor contract count",
+      "Log donation amount",
+      "Total contracts"
+    )),
+    assumption = factor(assumption, levels = c("Observed effect", "Half observed effect"))
+  )
+
+ggplot(power_plot_df, aes(x = target_n, y = power, color = model)) +
+  geom_hline(yintercept = 0.80, linetype = "dashed") +
+  geom_line(linewidth = 0.9) +
+  geom_point(size = 2) +
+  facet_wrap(~ assumption) +
+  scale_color_manual(values = c(
+    "Donor contract share" = "#E69F00",
+    "Donor contract count" = "#009E73",
+    "Log donation amount" = "#56B4E9",
+    "Total contracts" = "#CC79A7"
+  )) +
+  scale_x_continuous(breaks = n_targets) +
+  labs(
+    x = "Projected sample size",
+    y = "Estimated power",
+    color = "Dependent variable"
+  ) +
+  theme_bw() +
+  theme(legend.position = "bottom")
+
+ggsave("results/figure/power_simulation_hw3.png", width = 8, height = 5, dpi = 300)
+
+```
+
+Figure \@ref(fig:fig-robustpower) traces how power changes as the matched panel grows. The dashed horizontal line marks the conventional 0.80 benchmark. If the lines remain well below 0.80 at `N = 48`, then the current extension is underpowered even before considering model uncertainty from agency matching.
 
 \newpage
 
 # 4. Results
 
-## Figure \@ref(fig:f4repacs). Conservative Trends in Agency Ideal Points
+## Table \@ref(tab:robustpanelsetup). Effective Sample Sizes Across ACS Replication and Extension Models
 
-Figure \@ref(fig:f4repacs) reproduces the central empirical finding of @acsmapping2025: several agencies shift in a conservative direction over administrations, with the largest movement concentrated in a small subset of agencies. Most agencies cluster near the ideological center across all four administrations, while a minority drift substantially. This pattern is consistent with the author's argument that agency ideology is not static and responds to presidential incentives over time.
+Table \@ref(tab:robustpanelsetup) shows the sample-size contrast motivating the HW3 robustness design. The original ACS replication uses 276 agency-administration observations, but the procurement extension relies on only 48 matched rows, while the ordered-logit follow-ups fall to 42 and 22 observations. This confirms that the main risk in the extension is not data abundance but limited information.
 
-## Table \@ref(tab:t1repacs). Agencies with Largest Shifts in the Conservative Direction
+## Table \@ref(tab:robustboot). Bootstrap Uncertainty for Procurement Extension Coefficients
 
-Table \@ref(tab:t1repacs) identifies the agencies with the largest minimum-to-maximum range in estimated ideal points across administrations. The agencies at the top of this list represent the subset where executive pressure or personnel turnover most strongly reshaped ideological orientation. The replication reproduces the agency-level ordering and substantive interpretation from @acsmapping2025's Figure 4.
+Table \@ref(tab:robustboot) shows that the bootstrap check does not affect the four procurement models in the same way. The donor-contract-share model remains centered at zero under both interval estimates, so this outcome provides little evidence of any distance effect. The donor-contract-count model stays positive, but both the asymptotic and bootstrap intervals include zero, which suggests directional stability without much precision. The clearest change appears in the log-donation model: the asymptotic interval excludes zero, but the bootstrap interval widens enough to include zero. That shift indicates that the negative HW2 estimate is substantively interesting but less certain once small-sample uncertainty is taken seriously. The total-contracts model stays negative, yet both intervals still include zero.
 
-## Table \@ref(tab:t2repacs). Ideological Distance and Regulatory Productivity
+Substantively, the matched sample gives the clearest support for a negative relationship between ideological distance and the total amount donated within agency-administration cells. By contrast, the extension provides much weaker evidence that ideological distance changes donor-linked contract share, donor-linked contract count, or total contracting volume with comparable precision.
 
-Table \@ref(tab:t2repacs) replicates ACS Equation (3) across five outcome definitions. The coefficient on `distance` is negative across all columns, indicating that agencies whose ideology is further from the president produce fewer pages of final rules, fewer significant rules, and fewer regulatory-only rules. The negative binomial specification absorbs agency fixed effects and weights by the inverse variance of the ideal point estimates. The sign and magnitude patterns replicate the original Table 2 in @acsmapping2025.
+## Figure \@ref(fig:fig-robustboot). Asymptotic versus Bootstrap Confidence Intervals
 
-The following subsections report results from the three methodological extensions. Each introduces a different outcome or estimation strategy to probe the scope of the ideological alignment mechanism identified by @acsmapping2025.
+Figure \@ref(fig:fig-robustboot) makes the same pattern easier to see. The bootstrap intervals for donor-contract share and donor-contract count are close to the asymptotic ones, but the log-donation and total-contract intervals widen noticeably. The log-donation result is still centered on a large negative coefficient, yet the bootstrap figure shows why that estimate should be interpreted as suggestive rather than definitive in a sample of 48 matched observations.
 
-## Table \@ref(tab:extmodeltable). ACS Distance and Fazekas Donation/Contract Outcomes
+## Table \@ref(tab:robustloo). Leave-One-Agency-Out Sensitivity Summary
 
-Table \@ref(tab:extmodeltable) extends ACS Equation (3) by replacing regulatory activity outcomes with donation and contracting outcomes from @fazekasagency2023. The central parameter in each column is the coefficient on `distance`. A negative coefficient indicates that greater ideological distance between the president and the agency is associated with lower donor-linked contracting intensity in that agency-administration cell. Stability of the sign across columns supports a more robust interpretation; sign reversals indicate sensitivity to outcome choice.
+Table \@ref(tab:robustloo) shows that the leave-one-agency-out story is more reassuring than the bootstrap story for three of the four models. Donor-contract count stays positive in every omission, with a narrow range from 0.087 to 0.207. Total contracts also remains negative in every omission, and its range is fairly tight. The log-donation model keeps a negative sign throughout as well, although its range is wider, which means the coefficient is not driven by a single agency but its magnitude is sensitive to which agencies are in the sample. The donor-contract-share model is the weakest case. Its full-sample coefficient is essentially zero, and the sign changes in about 28 percent of the leave-one-out estimates.
 
-## Figure \@ref(fig:extcoefplot). Distance Effect across Alternative Fazekas Outcomes
+## Figure \@ref(fig:fig-robustloo). Leave-One-Agency-Out Dispersion in Distance Coefficients
 
-Figure \@ref(fig:extcoefplot) plots the `distance` coefficient from the extension models alongside $95\%$ confidence intervals. This visual comparison identifies which outcome definitions produce the most precise estimates and whether the direction of the distance effect is consistent across donor contract share, donor contract count, log donation amount, and total contracts. A cluster of negative estimates with non-overlapping confidence intervals would provide the strongest evidence that ideological alignment shapes distributive outcomes in procurement.
+Figure \@ref(fig:fig-robustloo) reinforces that reading. The donor-contract-count and total-contract clouds are tightly clustered around the full-sample coefficient. The log-donation estimates are more dispersed and include a few visibly influential omissions, but they do not cross zero. By contrast, the donor-contract-share estimates sit almost directly on zero and move across it repeatedly, which is consistent with the absence of a stable signal in that model.
 
-## Table \@ref(tab:ext1logit). Logistic Regression of Donation Probability on Ideological Distance
+## Table \@ref(tab:robustpower). Power-Style Simulation for the Matched Procurement Panel
 
-Table \@ref(tab:ext1logit) reports logistic regression estimates for the binary `donation_dummy` outcome. Column (1) includes only `distance` as a predictor; Column (2) adds an administration fixed effect. A negative coefficient on `distance` indicates that firms are less likely to donate when the agency's ideology is far from the president, consistent with strategic targeting of politically aligned agencies. The divide-by-4 rule (@gelman2025) converts the logit coefficient to an approximate upper bound on the marginal probability change per unit of ideological distance.
+Table \@ref(tab:robustpower) shows that the current matched panel is not equally informative across outcomes. Under the observed-effect scenario, only the log-donation model clears the conventional 0.80 power threshold at `N = 48`. Total contracts reaches only moderate power (0.497), and donor-contract count remains low (0.245). Under the half-effect scenario, power drops sharply for every model. The donor-contract-share model is especially uninformative: because the observed coefficient is essentially zero, projected power stays at the nominal false-positive rate and the Type S and Type M summaries become mechanically unhelpful. The more informative comparison is between log donation, which remains relatively strong, and the count-based outcomes, which appear underpowered at the current sample size.
 
-## Figure \@ref(fig:ext1logitplot). Predicted Donation Probability by Distance
+This matters substantively because the extension speaks most clearly to donation volume and much less clearly to downstream contracting counts. Mixed results in the count models should therefore be interpreted as limited evidence rather than as a sharp contradiction of the ideological-distance argument in either @acsmapping2025 or @fazekasagency2023.
 
-Figure \@ref(fig:ext1logitplot) translates the logistic model into predicted donation probabilities across the observed range of `distance`, separately for Bush and Obama administrations. A downward-sloping curve indicates that firms are less likely to donate as agencies become more ideologically distant from the president. The administration comparison shows whether this strategic-targeting pattern is stable across partisan contexts or specific to one presidency.
+## Figure \@ref(fig:fig-robustpower). Projected Power as the Matched Sample Size Grows
 
-## Figure \@ref(fig:ext2ppc). Overdispersion Diagnostic
-
-Figure \@ref(fig:ext2ppc) compares the distribution of zero-rates across 200 simulated datasets from Poisson and negative binomial models fitted to the ACS regulatory productivity data, alongside the observed zero-rate (dashed line). The Poisson model generates replicated zero-rates systematically below the observed proportion, indicating that its constraint $\text{sd}(y) = \sqrt{\text{E}(y)}$ is too restrictive for these data. The negative binomial model generates replications that surround the observed zero-rate, validating the overdispersion assumption in @acsmapping2025's Equation (3).
-
-## Table \@ref(tab:ext3ordlogit). Ordered Logistic Regression of Agency Independence Tier
-
-Table \@ref(tab:ext3ordlogit) reports the ordered logistic coefficient for `distance` on the four-tier agency independence scale, from most independent (indep. commission and IRC) to least independent (cabinet department). A negative $\hat{\beta}$ implies that agencies with greater ideological distance from the president tend to occupy more independent tiers, consistent with the institutional logic that structural independence reduces direct presidential alignment. A null result would indicate that ideological distance and formal independence are orthogonal properties of agencies in this sample.
-
-## Table \@ref(tab:ext3aagencylevel). Agency-Level Ordered Logistic Regression of Independence Tier
-
-Table \@ref(tab:ext3aagencylevel) re-estimates Extension 3 after collapsing the data to one row per agency and replacing administration-specific distance with mean ideological distance across administrations. This specification is closer to the institutional outcome because agency independence tier is fixed at the agency level. If the coefficient remains negative and is similar in magnitude to Table \@ref(tab:ext3ordlogit), the cross-administration result reflects a stable cross-agency pattern. If it attenuates toward zero, the earlier result is more likely to reflect within-agency repetition from repeated agency-administration observations rather than a genuine structural relationship between ideological distance and independence tier.
-
+Figure \@ref(fig:fig-robustpower) shows how uneven that power problem is. With the observed HW2 effect sizes, log donation is already above 0.80 at `N = 48`, total contracts reaches 0.80 only after the sample doubles to about 96, and donor-contract count does not cross 0.80 until the sample is much closer to the original ACS size. Under the half-effect scenario, even total contracts remains below 0.80 at `N = 276`, and donor-contract count stays far below that benchmark throughout. The figure therefore supports a cautious interpretation of the count-based procurement results: mixed or null findings there may reflect low power rather than strong evidence of no relationship.
 
 \newpage
 
@@ -1628,23 +1610,27 @@ Table \@ref(tab:ext3aagencylevel) re-estimates Extension 3 after collapsing the 
 
 ## Implications
 
-This extension moves the dependent variable from regulatory output to procurement outcomes, testing whether the same ideological alignment mechanism identified in @acsmapping2025 also shapes distributive politics in federal contracting from @fazekasagency2023. If ideological distance depresses both rule production and donor-linked contracting, this suggests that presidential-agency alignment is a general organizing principle of bureaucratic behavior rather than a phenomenon specific to rulemaking. Agencies that are ideologically close to the president are not only more productive in regulatory terms but also more responsive to political signals from contributing firms.
+The HW3 robustness checks shift the interpretation of the ACS-Fazekas extension from simple sign reading to a more careful assessment of what the sample can actually support. The original ACS replication remains strong because it is estimated on a much larger agency-administration panel. The procurement extension is substantively interesting, but it is built on a matched sample that is small enough for wide uncertainty, case sensitivity, and low power to become central inferential concerns.
 
-The logistic and ordered logistic extensions add two dimensions to this picture. The logistic result indicates whether firms actively sort their donations toward ideologically aligned agencies, while the ordered logit tests whether ideological distance is itself a function of an agency's structural independence tier. Together, these three extensions separate the supply side (which agencies receive more regulatory output) from the demand side (which agencies attract more donation activity) of the political economy of bureaucratic alignment.
+The bootstrap and leave-one-agency-out checks answer complementary questions. The bootstrap asks how uncertain the coefficient is under repeated sampling from a small matched panel. The leave-one-agency-out analysis asks whether the result is being carried by a handful of agencies. In this application, the two checks point to a mixed conclusion rather than a simple rejection of the extension. The donor-contract-count and total-contract models are directionally stable when agencies are omitted one at a time, but the power analysis shows that both are still underpowered at the current sample size. The log-donation model is the strongest case substantively, yet the bootstrap indicates that its interval is wider than the model-based standard errors imply. The donor-contract-share model does not display a stable signal under any of the three checks.
 
-The agency-level follow-up to Extension 3 sharpens this interpretation by aligning the unit of analysis with the institutional outcome itself. If the relationship between ideological distance and agency independence persists after collapsing to one row per agency, the result is less likely to be an artifact of repeated agency-administration observations.
+The power-style simulation adds the final piece. It shows whether the observed sample size is large enough to detect effects of the size reported in HW2. The answer depends on the outcome. The log-donation model is reasonably well powered if the observed coefficient is close to the true one. The count-based outcomes are not. That means null or mixed findings in those models are weak evidence against the theory. The better conclusion is that the extension contains one relatively informative outcome, one near-null outcome, and two outcomes for which low power remains a serious constraint.
+
+In substantive terms, the clearest pattern in the matched panel is that agencies farther from the president are associated with lower total donation volume. The matched sample is too small, however, to say with the same confidence whether ideological distance also changes donor-contract incidence or contract counts.
 
 ## Method-Theory Link
 
-The theory in @acsmapping2025 holds that ideological distance between the president and an agency reduces the president's incentive to protect or prioritize that agency's output, thereby depressing regulatory productivity. My extension translates this mechanism into a procurement context using @fazekasagency2023. If distance also reduces the probability that a firm donates to an ideologically distant agency, this indicates that the political economy of alignment operates at the firm level, not only at the level of agency output. The method follows directly from this theoretical chain: (1) logistic regression is the appropriate estimator when the outcome is a firm's binary donation decision, (2) negative binomial is appropriate for count outcomes where overdispersion is present, and (3) ordered logistic is appropriate when the outcome is a categorical independence hierarchy with more than two ordered levels.
+The theory in @acsmapping2025 is about ideological alignment between presidents and agencies. My HW2 extension translated that logic into procurement outcomes by asking whether the same ideological distance measure predicts donation and contracting behavior. HW3 does not introduce a new theory. Instead, it asks whether the extension is estimated precisely enough to support the substantive claims made from it. 
+
+This is the relevant method-theory link for the homework: when the theory is tested on a much smaller matched sample than the original article used, the main threat is not only omitted variables or model choice. It is also whether the data contain enough information to distinguish signal from noise. 
+In @acsmapping2025, ideological distance is meant to capture how far agencies sit from presidential preferences. In @fazekasagency2023, political contributions are one channel through which firms try to shape procurement relationships. The bootstrap, leave-one-agency-out, and power-style simulation all address whether those two ideas can be connected credibly in a small matched panel. Together they make the extension more informative because they separate weak theory from weak information.
 
 ## Limitations and Future Research
 
-The principal limitation of this extension is the reliance on cross-dataset agency matching by name, which introduces measurement error when agency names differ across the @acsmapping2025 and @fazekasagency2023 data sources. To maximize panel coverage, I combine three matching strategies: strict matching against ACS agency identifiers, broad matching using Federal Register rulemaking records from 2004 to 2015, and fuzzy string matching for agencies unresolved by the first two approaches. Despite these efforts, the extension panel covers only the Bush and Obama administrations (2001-2016), as the @fazekasagency2023 dataset does not extend to the Trump period covered by @acsmapping2025. 
-A more complete crosswalk using official agency code identifiers (RINs in the ACS data and USASpending codes in the Fazekas data) would further improve coverage and reduce matching error. 
+The main limitation of this HW3 design is that it treats the matched procurement panel as the object of inference without changing the underlying agency matching procedure. If the match itself is noisy, then the sample-size problem and the measurement problem are intertwined. A larger matched panel built from official agency identifiers would improve both coverage and statistical power.
 
-
-More substantively, the current extension treats `distance` as time-varying at the administration level but does not interact it with presidential party or other institutional factors that might affect agencies' decision-making processes. @acsmapping2025 provides continuous ideal point estimates for 69 agencies across four administrations; a natural extension would interact these estimates with a partisan indicator or an agency ideology factor and examine whether ideological proximity amplifies donor-linked contracting (e.g., when the president and agency are aligned with the contributing party). I plan to explore this design in future work.
+A second limitation is that the power-style simulation is retrospective. It uses the observed HW2 estimates as anchors for plausible effect sizes. That is useful for diagnosing whether the current sample is informative, but it is not a substitute for a prospective design analysis based on a pre-specified substantive benchmark. 
+A potential next step would be to define a minimum substantively important effect on donation or contracting outcomes and use that benchmark for a prospective power analysis.
 
 
 \newpage
