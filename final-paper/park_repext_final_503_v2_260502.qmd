@@ -1,0 +1,563 @@
+---
+title: "Amplification or Insulation? The Role of Agency Ideology in Donation-Linked Favoritism in U.S. Federal Contracting"
+subtitle: "Replication and Extension of Acs (2025) and Fazekas et al. (2023)"
+author:
+  - name: Jody Park
+    affiliations:
+      - name: Pennsylvania State University
+abstract: |
+  Federal contracting, worth more than \$700 billion annually, is systematically shaped by political donations. However, the donation-to-favoritism relationship varies substantially across agencies. This paper argues that agency ideology is a key moderator of this relationship. I test this argument by extending Fazekas et al.'s (2023) agency independence model with Acs's (2025) dynamic agency ideal point estimates. The replication reproduces the finding that the donation effect on the favoritism risk index is 0.131 points larger in cabinet agencies than in independent agencies ($p = 0.006$), with no significant baseline effect at the 5 percent level in independent agencies. The extension finds that regulatory agencies exhibit a larger donation-favoritism relationship, especially for medium donations to the party in power and in the DDD specification around the 2009 administration change. The continuous president-agency distance measure provides mixed evidence: firms are more likely to donate as agencies become more ideologically distant from the president, which cuts against the simple proximity version of the amplification hypothesis. These findings most clearly support a discretion mechanism and suggest that recent executive branch politicization may expand the scope of donation-linked favoritism in federal contracting.
+word-count: "{{wordcount}}"
+format:
+  apsr-pdf:
+    nonblind: true
+    runningtitle: "PLSC 503 Final Paper (APSR Draft Style)"
+    runningauthor: "Park"
+    include-in-header:
+      text: |
+        \usepackage{placeins}
+        \usepackage{setspace}
+        \usepackage{dcolumn}
+        \usepackage{booktabs}
+        \usepackage{siunitx}
+        \usepackage{amsmath}
+        \usepackage{makecell}
+        \usepackage{url}
+        \usepackage{longtable}
+        \usepackage{graphicx}
+        \usepackage{array}
+        \usepackage{multirow}
+        \usepackage{wrapfig}
+        \usepackage{float}
+        \usepackage{colortbl}
+        \usepackage{pdflscape}
+        \usepackage{rotating}
+        \usepackage{afterpage}
+        \usepackage{threeparttable}
+        \usepackage{threeparttablex}
+        \usepackage[normalem]{ulem}
+        \usepackage{xcolor}
+        \raggedbottom
+        \setlength{\abovedisplayskip}{4pt}
+        \setlength{\belowdisplayskip}{4pt}
+        \setlength{\abovedisplayshortskip}{2pt}
+        \setlength{\belowdisplayshortskip}{2pt}
+        \AtBeginDocument{\hypersetup{colorlinks=true,linkcolor=blue,filecolor=magenta,urlcolor=blue,citecolor=blue}}
+        \usepackage[most]{tcolorbox}
+        \newtcolorbox{qbox}{enhanced,breakable,boxrule=0.5pt,arc=2mm,colback=gray!10,colframe=black!50,left=6pt,right=6pt,top=6pt,bottom=6pt}
+bibliography: references.bib
+csl: apanodoi.csl
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+
+# Introduction
+
+The second Trump administration has driven a wave of government reforms aimed at reshaping the federal bureaucracy. President Trump signed Executive Order 14158 of January 20, 2025 to launch the Department of Government Efficiency (DOGE). DOGE has pursued a transparent consolidation of executive control over agency budgets and procurement, with the stated goal of improving efficiency and accountability and with claimed savings of "215 billion dollars of government spending" and "1,335.4 dollars per federal taxpayer" [@whitehousereform2026; @dogewebsite2025]. This reform has involved mass appointments of political loyalists to key agency positions, structural reorganization to centralize decision-making authority, and a systematic reshaping of agency ideology through targeted staffing and policy directives [@bonicadoge2025]. These changes have intensified ongoing debate about their implications for bureaucratic agency productivity and the politics of federal contracting based on agency ideology [@fazekasagency2023; @dahlstrom2021; @gailmard2012; @brunjesplesa2024; @hubermccarty2004; @acsmapping2025]. On one hand, proponents argue that aligning agencies more closely with presidential preferences will enhance policy coherence and responsiveness [@lewis2008; @gailmard2012]. On the other hand, critics warn that such consolidation of control may amplify partisan favoritism in contracting, undermine democratic accountability, and distort regulatory outcomes [@dahlstrom2021; @spenkuch2023].
+
+Understanding how agency ideology shapes the politics of federal contracting is therefore crucial for evaluating the consequences of these government reforms and for informing future institutional design in the long run. The U.S. federal government spends more than $\$700$ billion annually on goods and services through competitive contracting, making it a critical arena where political influence can have significant economic and policy implications. A growing body of research establishes that firms' political donations to the party controlling the White House increase their chances of receiving favorable contracts, raising fundamental concerns about democratic accountability [@witko2011; @goldman2013; @fazekasagency2023; @dahlstrom2021]. Yet the magnitude of this effect varies systematically across agencies. Which institutional features explain this variation, and why, remains underexplored.
+
+This paper argues that agency ideology is the key moderator of the relationship between political contributions and agency contracting. Drawing on principal-agent theory, I contend that ideological proximity between an agency and the president shapes how readily contracting officials respond to partisan signals from donors. When an agency's ideal point closely tracks the president's, officials are more receptive to politically motivated contracting preferences, amplifying the donation-to-contract relationship. When agencies are ideologically distant, political pressure translates less directly into favorable contracting outcomes. Moreover, the moderating effect of agency ideology should be larger in agencies with more contracting discretion, as statutory rules fully determine some contract decisions while others allow for more official judgment [@epstein1999; @hubershipan2002].
+
+I test this argument by extending two recent studies. First, @acsmapping2025 provides dynamic agency ideal point estimates derived from an item response theory (IRT) model of the Office of Information and Regulatory Affairs (OIRA) regulatory review patterns, finding that ideologically proximate agencies produce more regulatory output. Second, @fazekasagency2023 demonstrate that companies' political contributions increase favoritism risks in U.S. federal contracting, favoring firms that make political donations. The effects are concentrated in less independent agencies, suggesting that structural independence from presidential control mitigates partisan favoritism. I bring these frameworks together: using the @acsmapping2025 ideal points as a continuous agency ideology measure, I investigate whether president-agency ideological distance moderates the contribution-favoritism relationship examined by @fazekasagency2023, along with regulatory versus non-regulatory agency status and contracting outcomes (e.g., total contract value, number of contract awards).
+
+Preliminary results provide mixed support for this argument. Replicating @fazekasagency2023, the donation-favoritism relationship is concentrated in cabinet agencies: the donation effect on the favoritism risk index is 0.131 points larger in cabinet agencies than in independent agencies ($p = 0.006$), while the independent-agency baseline effect is not significant at the 5 percent level. In the extension, regulatory agencies show a larger donation-favoritism relationship, especially for medium donations to the party in power and in the DDD specification around the 2009 administration change. The @acsmapping2025 continuous agency ideology measure complicates the simple proximity account: firms are more likely to donate as agencies become more ideologically distant from the president. The results therefore support the discretion hypothesis most clearly, while the amplification hypothesis receives partial support.
+
+These findings contribute to the literature on the politics of federal contracting by pointing to two complementary mechanisms through which agency ideology may shape these dynamics. @fazekasagency2023 show that contributions increase favoritism through the channel of agency independence: agencies with weaker formal insulation from political principals are more responsive to partisan signals about donor preferences. This paper extends that logic to regulatory authority: the interaction between donations and the regulatory agency indicator tests whether the value of political investment is higher where agencies possess rulemaking power, capturing variation in the donation-favoritism relationship that independence tier alone does not directly address. In parallel, @acsmapping2025 find that ideological distance between president and agency depresses regulatory output. Translating this into the contracting context, the positive relationship between distance and donation probability suggests that firm targeting does not simply follow presidential proximity. The methods follow from these chains: interaction fixed-effects estimation for favoritism risk, logistic regression for the binary donation decision, and negative binomial regression for count outcomes where overdispersion is present.
+
+The paper proceeds as follows. Section 2 reviews theory and prior work. Section 3 presents the empirical strategy. Section 4 reports the results. Section 5 discusses mechanisms, implications, and limitations. Appendix A summarizes the replications, Appendices B and C report the relevant replication tables and figures for @acsmapping2025 and @fazekasagency2023, and Appendix D reports robustness checks for alternative outcome models, overdispersion, and regulatory-agency matching.
+
+# Agency Ideology and the Politics of Federal Contracting
+
+## Political Contributions, Access, and Contracting Favoritism
+
+The channel through which political donations influence federal contracting operates through access rather than explicit exchange. Firms that contribute to the ruling party gain preferential access to political networks, signal cooperative intent to the president's coalition, and are more likely to be present when contracting decisions are made informally [@witko2011; @dahlstrom2021]. The empirical finding is consistent: contributions to members of key oversight committees increase contract awards [@witko2011], politically connected boards win more contracts after party transitions [@goldman2013], and winning candidates direct contracts toward their donors even in contexts with relatively robust procurement rules.
+
+@fazekasagency2023 provide the most comprehensive evidence for the U.S. federal system. Combining transaction-level federal contract data with campaign contributions data from @bonicadime2016 for 2004–2015, they construct a favoritism risk index (FRI) that aggregates signals of noncompetitive procedures and outcomes. Using fixed effects regression, propensity score matching, and regression discontinuity at contribution thresholds, @fazekasagency2023 find that a large increase in contributions (from \$10,000 to \$5 million) raises favoritism risk by approximately one-quarter of a standard deviation. The effect is partisan (contributions to the party holding the presidency matter more than contributions to the opposition) and is driven largely by noncompetitive award practices in executive departments.
+
+## Agency Ideology: Structural Independence versus Ideological Proximity
+
+The existing literature explains cross-agency variation in donor favoritism primarily through a structural lens. Agencies insulated from presidential control by statute (fixed-term appointments, removal-for-cause protections, and bipartisan boards) show less partisan distortion in contracting [@dahlstrom2021; @fazekasagency2023; @selin2015]. This independence-tier framework, while influential, conflates two conceptually distinct dimensions. *Structural independence* constrains the president's ability to staff agencies with loyalists. *Ideological proximity* determines how readily existing staff act on partisan cues even absent explicit pressure.
+
+@acsmapping2025 separates these dimensions empirically. Applying an IRT measurement model to Unified Agenda rulemaking proposals and OIRA discretionary review decisions from the Clinton through the Trump administrations, the author estimates dynamic agency ideal points on a common NOMINATE-linked scale. The paper's core finding, that agencies ideologically proximate to the president produce more regulatory output, suggests that ideological alignment shapes bureaucratic behavior in ways not fully captured by statutory structure [@acsmapping2025]. I extend this logic to contracting as a testable implication: if proximity also shapes contracting, agencies whose preferences align with the president should be more responsive to the president's implicit contracting preferences, including rewarding co-partisan donors.
+
+Earlier approaches to measuring agency ideology used congressional testimony patterns [@bertelli2011], expert surveys of agency preferences [@clinton2008], and appointee CFscores [@nixon2004]. The @acsmapping2025 estimates improve on these by dynamically capturing ideological shifts across administrations and by being rooted in the actual regulatory review process rather than expert perceptions. @spenkuch2023 provide complementary evidence on contracting officers: by exploiting presidential transitions as a source of within-bureaucrat variation in political alignment, they find that ideologically misaligned contracting officers produce contracts with greater cost overruns and delays, consistent with a motivation channel.
+
+What remains unclear is how these two dimensions of agency ideology, structural independence and ideological proximity, interact to shape the politics of federal contracting. Do ideologically proximate agencies amplify the baseline donation-favoritism relationship documented by @fazekasagency2023, or does strong ideological commitment insulate officials from outside political pressure? The answer has important implications for understanding the mechanisms through which agency ideology shapes contracting outcomes and for evaluating the consequences of recent government reforms that systematically reshape agency ideology.
+
+## Hypotheses
+
+The relationship between agency ideology and donor-linked favoritism contains two competing predictions.
+
+*H1: Amplification Hypothesis* Agencies ideologically proximate to the president are staffed by officials who share the president's coalition-building incentives. These officials are more likely to treat partisan contribution signals as legitimate guidance, less likely to apply rigorous scrutiny to donors' bids, and more willing to use discretionary procedures that favor connected firms [@lewis2008; @hollibaugh2014]. Ideological alignment therefore amplifies the baseline donation-favoritism relationship documented by @fazekasagency2023.
+
+*H2: Insulation Hypothesis.* Strong ideological commitment, whether aligned or opposed, generates mission commitment that insulates officials from outside political pressure [@gailmard2012]. On this view, the most ideologically proximate agencies are the most motivated to serve the president's substantive policy goals rather than his electoral-coalition goals. Agencies in the ideological middle, less committed to any clear mission, may be most susceptible to donor pressure. This implies a non-monotonic moderation effect.
+
+The amplification hypothesis is the baseline expectation for two reasons. First, it is consistent with the structural logic in @fazekasagency2023, where more politicized agencies (closer to the president by virtue of appointee density) show more favoritism. Second, the presidential appointments literature finds that loyalty considerations intensify as electoral salience increases [@hollibaugh2014], suggesting that aligned officials face stronger pressure to reward co-partisan donors. The insulation alternative motivates caution in interpreting ideological proximity as uniformly increasing donor responsiveness.
+
+*H3: Discretion Hypothesis* A third scope condition refines both hypotheses: the moderation effect should be larger in agencies with more contracting discretion. Statutory rules fully determine some contract decisions; ideological alignment has scope to operate only where officials exercise meaningful judgment [@epstein1999; @hubershipan2002]. I test this by interacting the ideology moderator with an indicator for regulatory versus non-regulatory agencies, expecting amplification to concentrate in the more discretion-heavy regulatory environments.
+
+The extensions test these hypotheses directly. *H1* is evaluated by interacting the @acsmapping2025 continuous distance measure with donation variables in the @fazekasagency2023 framework: a negative distance interaction would support proximity-based amplification, while a positive coefficient would cut against it. Logistic regression of donation probability on distance provides a firm-level test of *H1*. *H3* is evaluated by the `regulatory_finalmatch` interaction and by the DDD specification, which tests whether amplification concentrates in regulatory agencies during partisan-aligned administrations. Appendix D reports auxiliary checks for alternative outcome models, overdispersion, and regulatory-agency matching.
+
+# Empirical Strategy
+
+@fazekasagency2023 use a four-category independence-tier classification as the primary moderator of the donation-favoritism relationship. This classification captures formal statutory structure but treats all within-tier variation as noise and is static across administrations. @acsmapping2025 provide a continuous, dynamic alternative: agency ideal points estimated administration by administration from revealed OIRA review behavior. Using this measure as a replacement for independence tier tests whether the categorical classification masks meaningful within-tier variation in presidential influence. The @acsmapping2025 validation model uses regulatory output as the outcome; shifting the outcome to contracting behavior examines whether the same ideological alignment measure is associated with who receives contracts and how politically active those contractors are, not only how many rules an agency produces.
+
+The extensions develop two frameworks to examine the role of agency ideology in the favoritism effect. First, using the @fazekasagency2023 framework, I replace the agency independence-tier moderator with a binary regulatory-agency indicator (`regulatory_finalmatch`) constructed by matching agencies in @fazekasagency2023 to the @acsmapping2025 regulatory sample. The interaction of donations with regulatory status tests whether the favoritism effect is concentrated where agencies hold formal rulemaking authority. A difference-in-differences-in-differences (DDD) model adds presidential-party period as a third dimension and uses the 2009 administration change to test whether donation-driven favoritism in regulatory agencies is further amplified when donors' preferred party controls the executive branch. The interaction of president-agency distance with the donation indicator tests whether the donation effect on contracting outcomes is larger for ideologically proximate agencies, consistent with the *amplification hypothesis*. A triple interaction with the regulatory agency indicator tests the *discretion* hypothesis by examining whether this moderation effect is stronger in regulatory environments.
+
+Second, in the @acsmapping2025 framework, I shift the outcome from rule production to contracting outcomes to examine the relationship between agency ideology and contracting decisions. @acsmapping2025 finds that ideological distance between the president and an agency is associated with lower regulatory output. A parallel mechanism may operate on the firm side: if firms anticipate that ideologically close agencies are more responsive to political pressure, they should donate when distance is small. I test whether firms are less likely to donate to ideologically distant agencies with a logistic regression of the binary donation indicator `isDonation` on `distance`, controlling for agency fixed effects (formal specification in @eq-logit). A posterior predictive check comparing Poisson and negative binomial fits supports the negative binomial specification used in the original paper. I then test whether ideological distance predicts where an agency falls in the four-tier independence hierarchy from @fazekasagency2023, using ordered logistic regression (formal specification in @eq-ordered).
+
+## Data
+
+The analysis combines four data sources:
+
+**Transactional-level Federal Contract Data:** contract-level records of federal procurement contracts from [USAspending.gov](https://www.usaspending.gov/), covering 2004–2015. The unit of analysis is the procurement contract, consistent with @fazekasagency2023.
+
+**DIME:** campaign contribution records matched to firm identifiers for 2004–2015 from @bonicadime2016. The key variable is the log of total contributions to the president's party in congressional term $t$, following @fazekasagency2023.
+
+**Agency Ideal Points:** dynamic agency ideal points estimated for four presidential administrations from 2001 to 2020, for each agency [@acsmapping2025]. The primary moderator is $|\hat{\theta}_a - \hat{\theta}_{\text{pres},t}|$, the absolute ideological distance between agency $a$ and the sitting president in administration $t$, where larger values indicate greater ideological distance. The ideal points are continuous, estimated separately for each administration, and linked to a common NOMINATE scale using the president's score as an anchor that allows dynamic shifts in agency ideology across administrations. The @acsmapping2025 dataset covers regulatory agencies; I match these to the full agency set in @fazekasagency2023 to construct the binary regulatory status indicator.
+
+**Agency Characteristics:** independence tier, regulatory/non-regulatory classification, contract-level characteristics, and other fixed effects (e.g., product category, state, contracting agency, and congressional term) are drawn from @fazekasagency2023 and @dahlstrom2021.
+
+The data merge is central to the extension. The @fazekasagency2023 contracting sample contains 175 agencies. The final regulatory classification identifies 102 agencies as regulatory after combining strict @acsmapping2025 matches, broad Federal Register rulemaking matches, and fuzzy name checks. Regulatory agencies account for 42.7 percent of contract observations. Agencies not classified as regulatory remain in the analysis as non-regulatory agencies, so the regulatory-status extension changes the moderator rather than dropping unmatched contracting observations.
+
+## Outcome Variables
+
+Two outcomes operationalize favoritism in federal contracting:
+
+**Favoritism Risk Index (FRI)**: the composite index `CRI7_final` from @fazekasagency2023 is the primary outcome for the regulatory-match and DDD tests (contract level).
+
+**Donation and contracting outcomes**: log donation amount (`logDonation`) and total contract count (`n_contracts`), used to test whether ideological distance predicts contractor activity at the agency level.
+
+## Agency Ideology Measures
+
+| Measure | Source | Scale | Interpretation |
+|------------------|------------------|------------------|------------------|
+| President-agency distance | @acsmapping2025 | Continuous | Smaller = more aligned |
+| Independence tier | @fazekasagency2023 | 4-category ordinal | Higher = more insulated |
+| Regulatory environment | @acsmapping2025, @fazekasagency2023 | Binary | 1 = regulatory agency |
+| Racial/ethnic leadership diversity (future research) | OPM/payroll data | Continuous | Higher = more diverse leadership |
+
+The president-agency distance measure is the primary contribution of this extension. It is continuous, dynamic (varying by administration), and grounded in revealed preference (OIRA review behavior) rather than expert opinion or statutory classification [@acsmapping2025; @clinton2008]. The independence and regulatory measures serve as alternative moderators and allow me to examine whether different *dimensions* of agency ideology produce different effects. Racial and ethnic leadership diversity is reserved for future research.
+
+## Model Specification
+
+The main estimation extends @fazekasagency2023 by replacing the independence-tier interaction with a continuous ideology interaction: $$
+Y_{iat} = \beta_1 D_{it} + \beta_2 (D_{it} \times \text{Ideology}_{at}) + \beta_3 \text{Ideology}_{at} + \mathbf{X}_{iat}'\gamma + \mu_f + \mu_p + \mu_s + \mu_c + \varepsilon_{iat}
+$$ {#eq-extension}
+
+where $Y_{iat}$ is the FRI, $D_{it}$ is the donation variable, and $\text{Ideology}_{at}$ is one of the measures in the table above. $\mu_f$, $\mu_p$, $\mu_s$, and $\mu_c$ are firm, product category, state, and congressional term fixed effects, following @fazekasagency2023. Standard errors are clustered at the firm and congressional term levels.
+
+The key parameter of interest is $\beta_2$. For the regulatory indicator, $\beta_2 > 0$ indicates that the donation-favoritism relationship is larger in regulatory agencies, consistent with the *discretion hypothesis*. For the continuous distance measure, a negative interaction indicates that larger ideological distance weakens the donation-favoritism effect, consistent with the *amplification hypothesis*. Under the *insulation hypothesis*, the relationship is attenuated or non-monotonic.
+
+For the @acsmapping2025 framework, the logistic regression of donation probability on ideological distance is: $$
+\operatorname{Pr}(\texttt{isDonation}_{ift} = 1) = \operatorname{logit}^{-1}(\alpha + \beta \cdot \texttt{distance}_{at} + \pi_a)
+$$ {#eq-logit}
+
+where $\pi_a$ is an agency fixed effect and $\texttt{distance}_{at}$ is the ACS absolute president-agency ideological distance. A negative $\hat{\beta}$ indicates that firms donate more when the agency's ideology is close to the president, consistent with strategic targeting of politically aligned agencies.
+
+I then test whether ideological distance predicts where an agency falls in the four-tier independence hierarchy from @fazekasagency2023, using ordered logistic regression: $$
+\operatorname{Pr}(\texttt{agency\_cat}_{a} > k) = \operatorname{logit}^{-1}(\beta \cdot \texttt{distance}_{a} - c_k), \quad k = 1, 2, 3
+$$ {#eq-ordered}
+
+where $c_k$ are cutpoints estimated alongside $\beta$. This model tests whether the dynamic estimates of agency ideal points from @acsmapping2025 refine or replace the categorical independence classification in @fazekasagency2023, which distinguishes (1) most independent agencies, (2) independent but not commission-based, (3) agencies with some independence but also more direct presidential oversight, and (4) least independent agencies (e.g., cabinet and executive departments).
+
+### Alternative Specifications
+
+I also estimate a triple-interaction specification adding a presidential-party indicator to test scope conditions for the DDD model around the 2009 administration change. An ordered logistic regression of the independence tier on mean ideological distance (see @eq-ordered) tests whether the @acsmapping2025 continuous estimates capture the same variation as the @fazekasagency2023 categorical moderator.
+
+### Identification
+
+The main threat to identification is that ideologically aligned agencies may receive more resources or face different firm composition, confounding the interaction. Firm, product category, state, and congressional term fixed effects absorb time-invariant versions of both. I additionally control for agency budget (log), agency size (log employment), and firm size.
+
+# Results
+
+## Regulatory Status as Moderator
+
+Before presenting the tables, I define the donation bins used in the regulatory-status models. Following @fazekasagency2023, "large" donations are above the 90th percentile of donation values. The medium-large threshold is \$5,640,807 for all donations and \$2,901,566 for donations to the majority party. "Majority" refers to the party in power.
+
+Table \ref{tab:hw1t4extregfinal} directly tests whether the effect of donations on favoritism differs by regulatory status, replacing the four-tier independence moderator with the binary `regulatory_finalmatch` indicator. The interaction terms isolate whether firms receive differentially favorable treatment in agencies with binding rulemaking authority. The strongest regulatory-status difference appears for medium donations to the majority party: the interaction is positive and statistically significant, while the large-donation interaction is small and statistically indistinguishable from zero. The medium-donation interaction is also positive, though only marginally significant. The pattern suggests that regulatory discretion matters most for intermediate contribution levels rather than the largest donors.
+
+```{r hw1t4extregfinal, results='asis', echo=FALSE}
+cat("\\input{../fazekas-ferrali-wachs-2023-jpart/results/table/t4extregfinal.tex}\n\\addtocounter{table}{-1}\\refstepcounter{table}\\label{tab:hw1t4extregfinal}\n")
+```
+
+Table \ref{tab:hw1ta13extregfinal} replicates the extension specification with lagged firm revenue as an additional control, addressing the concern that firm size simultaneously predicts donation behavior and contract outcomes. Coefficient estimates on the donation-regulatory interaction are substantively similar to those in Table \ref{tab:hw1t4extregfinal}, supporting the robustness of the primary results. Relative to Table \ref{tab:hw1t4extregfinal}, the donation dummy interaction becomes statistically significant, and the medium-donation-to-majority interaction remains positive and significant. The regulatory-agency classification underlying these models is documented in Appendix D, especially Tables \ref{tab:ahw1extensionsetup}--\ref{tab:ahw1regfinalmatch}. This reinforces the interpretation that regulatory agencies are the setting where contribution-linked favoritism risk is most visible.
+
+```{r hw1ta13extregfinal, results='asis', echo=FALSE}
+cat("\\input{../fazekas-ferrali-wachs-2023-jpart/results/table/ta13extregfinal.tex}\n\\addtocounter{table}{-1}\\refstepcounter{table}\\label{tab:hw1ta13extregfinal}\n")
+```
+
+@fig-hw1f4extregfinal presents the marginal effect of log donation on the FRI for non-regulatory and regulatory agencies separately, with $95\%$ confidence intervals. A point estimate above zero indicates that donations increase favoritism risk in that agency group. The figure allows direct visual comparison of the magnitude and precision of donation effects across the two agency types.
+
+```{r fig-hw1f4extregfinal, echo=FALSE, fig.cap="Marginal Effect of Log Donation on FRI by Regulatory Status", fig.pos="H", fig.align="center", out.width="100%"}
+knitr::include_graphics("../fazekas-ferrali-wachs-2023-jpart/results/figure/f4extregfinal.png")
+```
+
+Table \ref{tab:hw1regddd} adds presidential party as a third dimension to the interaction design. The key quantity is the triple interaction term (Donation $\times$ Regulatory $\times$ Democratic presidency), which tests whether donation-driven favoritism in regulatory agencies is further amplified when donors' preferred party controls the executive branch. A positive and significant coefficient would indicate that donation effects in regulatory agencies are stronger during Democratic administrations. The 2009 Bush-Obama transition supplies the administration change used in this comparison. The positive and statistically significant triple interactions in both the donation-dummy and log-donation specifications point in the same direction as H3: donation effects are larger in regulatory agencies when partisan control changes.
+
+```{r ahw1regddd, results='asis', echo=FALSE}
+cat("\\input{../fazekas-ferrali-wachs-2023-jpart/results/table/regddd.tex}\n\\addtocounter{table}{-1}\\refstepcounter{table}\\label{tab:hw1regddd}\n")
+```
+
+\clearpage
+
+## President-Agency Ideological Distance as Moderator
+
+Table \ref{tab:hw2ext1logit} reports logistic regression estimates for the binary donation probability outcome. Column (1) includes only president-agency distance as a predictor; Column (2) adds an administration fixed effect. The coefficient on `distance` is positive in both specifications, indicating that firms are more likely to donate when the agency's ideology is farther from the president. This result cuts against the simple proximity version of the amplification hypothesis. Appendix D also reports agency-level outcome checks in Table \ref{tab:ahw2extmodeltable} and @fig-ahw2extcoefplot, where the distance coefficient varies across donation and contracting outcomes.
+
+```{r hw2ext1logit, results='asis', echo=FALSE}
+cat("\\input{../acs-2025-apsr/results/table/ext1logit.tex}\n\\addtocounter{table}{-1}\\refstepcounter{table}\\label{tab:hw2ext1logit}\n")
+```
+
+@fig-hw2ext1logitplot translates the logistic model into predicted donation probabilities across the observed range of president-agency distance, separately for the Bush and Obama administrations. The upward-sloping curve is consistent with firms being more likely to donate as agencies become more ideologically distant from the president. The administration comparison shows whether this relationship is stable across partisan contexts.
+
+```{r fig-hw2ext1logitplot, echo=FALSE, fig.cap="Predicted Probability of Donation by President-Agency Ideological Distance", fig.pos="H", fig.align="center", out.width="80%"}
+knitr::include_graphics("../acs-2025-apsr/results/figure/ext1logitplot.png")
+```
+
+
+## Agency Independence as Moderator
+
+Table \ref{tab:hw2ext3ordlogit} reports the ordered logistic coefficient for president-agency distance on the four-tier agency independence scale, from most independent (indep. commission and IRC) to least independent (cabinet department). A negative $\hat{\beta}$ implies that agencies with greater ideological distance from the president tend to occupy more independent tiers, consistent with the institutional logic that structural independence reduces direct presidential alignment. The estimate is negative but statistically imprecise, so the result should be read as suggestive rather than confirmatory.
+
+```{r hw2ext3ordlogit, results='asis', echo=FALSE}
+cat("\\input{../acs-2025-apsr/results/table/ext3ordlogit.tex}\n\\addtocounter{table}{-1}\\refstepcounter{table}\\label{tab:hw2ext3ordlogit}\n")
+```
+
+Table \ref{tab:hw2ext3aagencylevel} re-estimates Table \ref{tab:hw2ext3ordlogit} after collapsing the data to one row per agency and replacing administration-specific distance with each agency's mean ideological distance across administrations. This specification is closer to the institutional outcome because agency independence tier is fixed at the agency level. The coefficient remains negative but is again imprecise, which suggests that the direction is stable but the available agency-level sample is too small to support a strong conclusion. Because the coefficient points in the same direction as Table \ref{tab:hw2ext3ordlogit}, the cross-administration result is less likely to be only an artifact of repeated agency-administration observations. Appendix D reports related ACS-side diagnostics, including the overdispersion check in @fig-ahw2ext2ppc.
+
+```{r ahw2ext3aagencylevel, results='asis', echo=FALSE}
+cat("\\input{../acs-2025-apsr/results/table/ext3aagencylevel.tex}\n\\addtocounter{table}{-1}\\refstepcounter{table}\\label{tab:hw2ext3aagencylevel}\n")
+```
+
+# Discussion
+
+The results point to two findings. First, the @fazekasagency2023 finding that political donations increase federal contracting favoritism persists in the regulatory-status extension. Second, the clearest evidence is for the discretion hypothesis: regulatory agencies show a larger donation-favoritism relationship in Table \ref{tab:hw1t4extregfinal}, Table \ref{tab:hw1ta13extregfinal}, and @fig-hw1f4extregfinal, and the DDD specification in Table \ref{tab:hw1regddd} points in the same direction. Evidence for the amplification hypothesis is mixed. The regulatory-status results are consistent with amplification in more discretionary environments, but @fig-hw2ext1logitplot cuts against the simple president-agency ideological proximity mechanism because firms are more likely to donate as agencies become more ideologically distant from the president. The insulation hypothesis is not supported by the main results.
+
+## Mechanisms
+
+Why does agency ideology shape donor-linked favoritism? I present three mechanisms that help interpret the empirical findings.
+
+A simple principal-agent framework clarifies the actors. Firms choose whether and how much to donate. Presidents value both policy implementation and coalition maintenance. Contracting officials choose how closely to scrutinize bids, how much discretion to exercise, and whether to use noncompetitive procedures. Congress sets statutory constraints and oversight rules. Agency ideology matters because it changes the perceived cost of acting on presidential coalition signals: aligned officials require less direct monitoring, while distant officials require stronger pressure or clearer statutory authority [@hubermccarty2004; @hubershipan2002]. Regulatory authority expands the set of discretionary choices available to officials, which is why the same donation signal can matter more in regulatory agencies.
+
+*Shared coalition incentives (H1).* Agencies staffed by officials who share the president's coalition incentives are more likely to treat co-partisan donors as cooperative actors deserving deference, even absent explicit direction [@hollibaugh2014]. This mechanism would support the amplification hypothesis: ideological proximity aligns contracting officials' preferences with the president's coalition goals, making them more responsive to political contribution signals than officials in distant agencies. This is not necessarily corruption; it may reflect a genuine belief that rewarding aligned firms serves the public interest. The FRI in @fazekasagency2023 captures deviations from competitive norms without adjudicating intent.
+
+*Reduced scrutiny of aligned contractors (H1, H3).* Contracting officers who share the president's policy preferences may apply less rigorous oversight to firms in the president's coalition, not because they are directed to, but because they anticipate that the president would approve. @spenkuch2023 find that misaligned contracting officers produce more cost overruns, consistent with reduced effort; the mirror image is that aligned officers tolerate more favorable procedural treatment for co-partisan firms. This channel is scope-conditioned by H3: reduced scrutiny has most bite where officials hold meaningful discretion, which is why the amplification effect should concentrate in regulatory agencies rather than agencies governed by rigid statutory contracting rules.
+
+*Appointee density as mediator (H1, H2).* The amplification effect may operate partly through the channel identified by @lewis2008, in which political appointees connect agencies more directly to presidential priorities and exert greater control over noncompetitive award decisions. President-agency ideal point distance may thus partly capture the appointee channel rather than ideology per se. This is relevant to H2 as well: if mission-committed career officials insulate against donor pressure, then the insulation hypothesis predicts that amplification weakens once appointee density is held constant, whereas the coalition-incentives mechanism predicts it persists. Controlling for appointee counts in future work would distinguish ideology from appointments as the operative channel.
+
+## Implications
+
+These findings have three implications for the study of the relationship between agency ideology and contracting politics, and more broadly for the study of American political institutions.
+
+First, they support treating agency ideology as a continuous, dynamic variable rather than only a binary structural characteristic. The @acsmapping2025 ideal points, by capturing administration-by-administration shifts in agency alignment, measure variation that the independence-tier classification cannot capture. This argues for more widespread use of dynamic ideal point measures in studies of bureaucratic behavior.
+
+Second, they connect the regulatory productivity literature to the contracting favoritism literature for the first time. @acsmapping2025 finds that ideologically proximate agencies produce more regulatory output; this paper finds that donation-linked favoritism is more visible in regulatory agencies. The continuous distance result complicates a simple alignment story, since firms are more likely to donate as agencies become more distant from the president. This suggests that regulatory status and president-agency distance should be treated as related but distinct dimensions of agency ideology.
+
+Third, the findings illuminate the stakes of executive branch politicization. If regulatory discretion amplifies donor favoritism in contracting, then the concentration of executive control pursued by DOGE in 2025 (through mass appointee placements in previously insulated agencies) could expand the scope of politically influenced contracting. The effect may be largest in regulatory agencies, precisely because the discretion available in regulatory contracting is greatest [@epstein1999].
+
+## Limitations
+
+This study has several limitations. The FRI from @fazekasagency2023 is a proxy; it captures procedural signals of favoritism rather than directly observed arrangements. The president-agency distance measure from @acsmapping2025 is estimated with uncertainty not propagated through the main regressions. The sample period (2004–2015) spans only two presidential transitions, limiting statistical power. The analysis also focuses on the average effect across all firms and agencies; heterogeneity by firm size, industry, or agency function may be important. Finally, the mechanisms are inferred rather than directly tested; more granular data on contracting officers and their ideological positions would help clarify the causal chain. Future work should separate regulatory status from president-agency ideological distance more explicitly, since these measures capture different dimensions of agency ideology.
+
+# Conclusion
+
+Federal contracting is systematically influenced by political donations, but the influence is not uniform. This paper provides evidence that agency ideology moderates how strongly political contributions translate into favorable contracting outcomes. The clearest evidence supports the discretion hypothesis: donation effects are larger in regulatory agencies, where officials have more rulemaking and contracting discretion. Evidence for the amplification hypothesis is partial. Regulatory-status models support it, but the continuous president-agency distance model shows that firms are more likely to donate as agencies become more ideologically distant from the president. The insulation hypothesis is not supported in the main results.
+
+The extension contributes to the literature on agency ideology and federal contracting in three ways. It uses the continuous, dynamic ideal point estimates of @acsmapping2025 as a moderator of partisan favoritism in contracting, complementing the agency independence four-tier classification of @fazekasagency2023 with a more dynamic measure of ideological alignment. It connects two parallel literatures, regulatory productivity and contracting politics, under a single framework. Furthermore, I provide new evidence bearing on the consequences of executive branch politicization, a question of immediate policy relevance under the DOGE reorganization. The findings suggest that the politics of federal contracting is shaped not just by formal institutional structure, but by the specific dimension of agency ideology being measured. This has important implications for understanding the mechanisms through which agency ideology shapes contracting outcomes and for evaluating the consequences of recent government reforms that systematically reshape agency ideology.
+
+What remains uncertain is the precise causal mechanism. The regulatory-status result is consistent with shared coalition incentives, reduced scrutiny, and appointee-density mediation; distinguishing among these requires richer datasets on contracting officers and their ideological or demographic characteristics. Future work should use plausibly exogenous shocks, such as executive order changes or presidential transitions, to address endogeneity concerns. It should also examine racial and ethnic diversity within agencies and develop sharper measures of agency discretion in contracting decisions. The scope of the analysis is limited to the 2004–2015 period; whether the same patterns hold under the more aggressive executive control strategies of the post-2017 and 2025 administrations is an important question for future research.
+
+\newpage
+
+# References {.unnumbered}
+
+::: {#refs}
+:::
+
+\newpage
+
+# Appendix {.appendix}
+
+## A. Summary of Replication {#sec-appsummary}
+
+The replication proceeds in two stages. First, I reproduce the @acsmapping2025 agency ideal point estimates. Second, I replicate the core contracting results in @fazekasagency2023. The full results are presented in Appendices B and C; this section describes the original designs and the data.
+
+### Replication 1: Agency Ideal Points (Acs 2025)
+
+@acsmapping2025 estimates agency ideal points using a two-parameter IRT model applied to the Unified Agenda of Federal Regulatory and Deregulatory Actions. The Unified Agenda, published twice yearly, lists all planned regulatory actions across the federal government. OIRA exercises discretionary review authority over economically significant rules. The key observable is whether OIRA, which acts as a proxy for the president's ideological preferences, chooses to review a given proposed rule.
+
+The IRT model treats each planned regulation as an "item" and each presidential administration as a "respondent." The probability that a regulation receives OIRA review is modeled as a function of the distance between the agency's ideal point and the administration's ideal point (proxied by the president's NOMINATE score). Agencies with ideal points far from the current president generate more OIRA reviews, because their proposals are more likely to conflict with presidential preferences. The model is estimated separately for each administration, then linked to a common NOMINATE scale using the president's NOMINATE score as an anchor.
+
+The resulting estimates cover the Clinton through the Trump administrations and include all major federal regulatory agencies. @acsmapping2025 validates the estimates against @clinton2008 expert surveys and @bertelli2011 congressional hearing-based measures, finding positive correlations. The author also documents that regulatory output, rules finalized per agency per year, is higher for agencies with smaller president-agency ideal point distance, which supports the productivity mechanism.
+
+I replicate this analysis using the replication data provided by the author, reproducing the main ideal point estimates and the regulatory productivity regression.
+
+### Replication 2: Agency Independence and Contracting Favoritism (Fazekas et al. 2023)
+
+@fazekasagency2023 construct favoritism risk indices from federal procurement data and test how these risks vary with firms' political contributions and agency independence. The authors use an extensive review of the literature to select indicators that have been used to measure favoritism in public procurement; the favoritism risk indices are constructed by combining seven indicators into a composite index (`CRI7_final`) that captures the overall risk of favoritism in federal contracts [@fazekasagency2023]: (1) Single bidding, (2) No publication, (3) Non-competitive procedure type, (4) Non-open solicitation type, (5) Contract modifications, (6) Supplier tax haven registration, and (7) Supplier debarred.
+
+Transactional-level federal contract data is collected from [USAspending.gov](https://www.usaspending.gov/), and campaign contribution data come from the DIME database [@bonicadime2016], which records all registered federal contributions. The unit of analysis is the procurement contract (transaction level). I replicate one of the main hypotheses, hypothesis 3, which tests whether political donations increase favoritism more in less independent agencies.
+
+The equation for hypothesis 3 of @fazekasagency2023 is: $$
+\text{FRI}_{iat} = \beta_1 D_{it} + \beta_2 (D_{it} \times \text{Independence}_{a}) + \mathbf{X}_{iat}'\gamma + \mu_f + \mu_p + \mu_s + \mu_c + \varepsilon_{iat}
+$$ {#eq-replication}
+
+where $D_{it}$ is the donation variable (binary `isDonation` or log `logDonation`), $i$ indexes firms, $a$ agencies, and $t$ congressional terms. $\mu_f$, $\mu_p$, $\mu_s$, and $\mu_c$ are firm, product category, state, and congressional term fixed effects; standard errors are clustered at the firm and congressional term levels [@fazekasagency2023]. Independence$_a$ is a two-category indicator distinguishing cabinet and executive-department agencies from independent agencies [@dahlstrom2021]. The interaction $\beta_2 > 0$ indicates that donations have larger effects in less independent (cabinet) agencies.
+
+I replicate the main fixed effects specifications with agency independence variables.
+
+### Replication Results
+
+The replication of @acsmapping2025 reproduces ideal point estimates for 69 agencies covering four administrations, Clinton through Trump. Most agencies cluster near zero across all four periods; a small subset of seven agencies exhibits substantial conservative shifts concentrated in the Trump administration. The regulatory productivity result replicates: agencies with smaller president-agency distance produce more regulatory output ($\hat{\beta} = -0.218$, SE = 0.054, *p* \< 0.05), consistent with @acsmapping2025 Table 2.
+
+The replication of @fazekasagency2023 reproduces the core finding: the donation effect on the FRI is 0.131 points larger in cabinet agencies than in independent agencies ($p = 0.006$), equivalent to roughly 0.12 standard deviations (SD$_\text{FRI}$ = 1.079). The base effect for independent agencies is not significant at the 5 percent level ($\hat{\beta} = -0.079$, $p = 0.051$). The interaction with independence tier replicates in sign and significance. Full results appear below.
+
+## B. Replication of Acs (2025) {#sec-appacs}
+
+```{=latex}
+\renewcommand{\thetable}{B\arabic{table}}
+\renewcommand{\thefigure}{B\arabic{figure}}
+\setcounter{table}{0}
+\setcounter{figure}{0}
+```
+
+## Replication Setup
+
+**Original Paper**: ACS, A. (2025). Mapping the Political Contours of the Regulatory State: Dynamic Estimates of Agency Ideal Points. *American Political Science Review*, 1--18.
+
+**Replication Data**: [R replication codes and dataset](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/C7S2SI) from @acsmapping2025 "Mapping the Political Contours of the Regulatory State: Dynamic Estimates of Agency Ideal Points (APSR)."
+
+**Extension Paper**: Fazekas, M., Ferrali, R., & Wachs, J. (2023). Agency Independence, Campaign Contributions, and Favoritism in US Federal Government Contracting. *Journal of Public Administration Research and Theory*, 33(2), 262--278.
+
+**Extension Replication Data**: [R replication codes and dataset](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/3U07EE) from @fazekasagency2023 "Agency Independence, Campaign Contributions, and Favoritism in US Federal Government Contracting (JPART)."
+
+@acsmapping2025 investigates the political ideology of US federal regulatory agencies by estimating dynamic ideal points for 69 administrative units across four presidential administrations (Clinton to Trump). The study uses data from the Unified Agenda on planned regulations and the president's discretionary review of those regulations from the Office of Information and Regulatory Affairs (OIRA) docket. By analyzing the ideological positions of regulatory agencies over time, the paper provides insights into how agency ideology shapes regulatory behavior and how it interacts with political dynamics. The core contribution of the paper is to offer a comprehensive mapping of the political contours of the regulatory state, shedding light on the ideological underpinnings of regulatory activity and its implications for policy outcomes.
+
+I extend the analysis by examining how agency ideology moderates the effects of political party contributions on favoritism in federal contracting, using the dynamic ideal point estimates from @acsmapping2025. Merging this agency ideology data with @fazekasagency2023 allows a direct test of whether ideological alignment between the president and an agency amplifies the returns to political contributions in contracting.
+
+**Data.** In @acsmapping2025, the author uses publicly available datasets: (1) Unified Agenda data, which includes information on the regulations that federal agencies plan to implement, including their content, timing, and regulatory impact (a semi-annual catalog, indicating pending or completed); (2) the OIRA docket, which lists the regulations reviewed, including the agency responsible, date of review, and outcome of review; and (3) Federal Register data, containing the official publication of federal regulations. @acsmapping2025 uses the eight-digit regulation identifier number (the RIN) to merge the Unified Agenda data with the OIRA docket data. The analysis focuses on 69 administrative units from 2001 to 2020, covering four presidential administrations. The author excludes regulatory agencies that did not issue a regulation in each administration or issued fewer than 40 regulations during the entire period.
+
+**Variables.** The dependent variable for the dynamic measurement model is `Review` ($Y_i$), a binary indicator for whether a planned rule was reviewed by OIRA. The dependent variable for the regulatory productivity model is `Regulatory Activity`, measured using Federal Register final-rule page length averaged per year within administration. The key independent variable is President-Agency ideological distance, $|X_p - X_{at}|$, where $X_p$ is the president's fixed ideal point (DW-NOMINATE anchors) and $X_{at}$ is the agency ideal point in administration $t$. Model components include rule significance ($S_i$, a binary indicator from Unified Agenda priority categories), agency intercepts ($a_a$), and a dynamic structure where agency ideal points evolve via a random walk across administrations.
+
+**Models.** For this replication, I focus on its *Model 2 (Regulatory Productivity)*, which uses a negative binomial model to examine the relationship between President-Agency ideological distance and regulatory output:
+
+$$
+\begin{aligned}
+\text{Regulatory Activity}_{at} &\sim \text{NegBin}(\mu_{at}, \theta),\\
+\ln(\mu_{at}) &= \pi_a + \beta \cdot \text{PresidentAgencyDistance}_{at}
+\end{aligned}
+$$ {#eq-acsproductivity}
+
+The paper tests three hypotheses: *H1* (OIRA review probability increases as ideological distance between the president and an agency increases); *H2* (agency ideology is not static; agency ideal points shift across presidential administrations); and *H3* (regulatory productivity is lower when President-Agency ideological distance is larger).
+
+## Replication Results
+
+```{r fig-ahw2f4repacs, echo=FALSE, fig.cap="Conservative Trends in Agency Ideal Points", fig.pos="H", fig.align="center", out.width="100%"}
+knitr::include_graphics("../acs-2025-apsr/results/figure/f4repacs.png")
+```
+
+@fig-ahw2f4repacs replicates the original pattern that several agencies shift in a conservative direction over administrations, with the largest movement concentrated in a small subset of agencies. This visual replication is consistent with Figure 4 of @acsmapping2025.
+
+```{r ahw2t1repacs, results='asis', echo=FALSE}
+cat("\\input{../acs-2025-apsr/results/table/t1repacs.tex}\n\\addtocounter{table}{-1}\\refstepcounter{table}\\label{tab:ahw2t1repacs}\n")
+```
+
+Table \ref{tab:ahw2t1repacs} reproduces the agency-level minima and maxima from the Figure 4 subset and highlights the same conservative movers identified in the original paper. The ordering and substantive interpretation follow the original table.
+
+```{r ahw2t2repacs, results='asis', echo=FALSE}
+cat("\\input{../acs-2025-apsr/results/table/t2repacs.tex}\n\\addtocounter{table}{-1}\\refstepcounter{table}\\label{tab:ahw2t2repacs}\n")
+```
+
+Table \ref{tab:ahw2t2repacs} replicates the negative-binomial validation result: larger President-Agency ideological distance is associated with lower regulatory productivity across outcome definitions. The sign and substantive magnitude patterns are aligned with the original paper.
+
+```{r ahw2ta1repacs, results='asis', echo=FALSE}
+cat("\\input{../acs-2025-apsr/results/table/ta1repacs.tex}\n\\addtocounter{table}{-1}\\refstepcounter{table}\\label{tab:ahw2ta1repacs}\n")
+```
+
+Table \ref{tab:ahw2ta1repacs} reproduces the appendix-style agency-by-administration summaries of significance rates, review rates, and counts. These summaries support the data pipeline used to estimate the main replication models.
+
+## C. Replication of Fazekas et al. (2023) {#sec-appfazekas}
+
+```{=latex}
+\renewcommand{\thetable}{C\arabic{table}}
+\renewcommand{\thefigure}{C\arabic{figure}}
+\setcounter{table}{0}
+\setcounter{figure}{0}
+```
+
+## Replication Setup
+
+**Original Paper**: Fazekas, M., Ferrali, R., & Wachs, J. (2023). Agency Independence, Campaign Contributions, and Favoritism in US Federal Government Contracting. *Journal of Public Administration Research and Theory*, 33(2), 262--278.
+
+**Replication Data**: [R replication codes and dataset](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/3U07EE) from @fazekasagency2023 "Agency Independence, Campaign Contributions, and Favoritism in US Federal Government Contracting (JPART)."
+
+**Extension Paper**: ACS, A. (2025). Mapping the Political Contours of the Regulatory State: Dynamic Estimates of Agency Ideal Points. *American Political Science Review*, 1--18.
+
+**Extension Replication Data**: [R replication codes and ACS dataset](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/C7S2SI) from @acsmapping2025 "Mapping the Political Contours of the Regulatory State: Dynamic Estimates of Agency Ideal Points (APSR)."
+
+@fazekasagency2023 argue that companies' political party contributions can bias the award of US federal government contracts, favoring firms that make political donations. The paper investigates the relationship between political party contributions and favoritism in US federal government contracting. The authors examine whether firms that make political donations are more likely to receive favorable treatment in federal procurement, and how this relationship is moderated by the level of agency independence. The study uses a comprehensive dataset of federal contracts, political donations, and agency characteristics to analyze patterns of favoritism and the influence of political contributions on contract awards. The authors find that firms that make political donations are more likely to receive favorable treatment in federal contracting, and this effect is stronger for firms that donate to the party in power. Additionally, the relationship between political contributions and favoritism is moderated by agency independence, with less independent agencies showing a stronger relationship between donations and favoritism.
+
+I extend the analysis with additional robustness checks by examining how agency ideology moderates the effects of political party contributions on favoritism in federal contracting, following dynamic estimates of regulatory agency ideal points in @acsmapping2025. His measure consists of dynamic estimates of regulatory agency ideal points across four different presidential administrations (from Clinton to Trump), for 69 administrative units. The data is based on Unified Agenda data on planned regulations and the president's discretionary review from the OIRA docket, which captures the ideological positions of regulatory agencies over time. By merging this agency ideology data with @fazekasagency2023's dataset, I analyze how the alignment between agency ideology and the party in power affects the relationship between political contributions and favoritism in federal contracting.
+
+**Data.** In @fazekasagency2023, the authors use: (1) transaction-level federal contract data from USAspending.gov; (2) registered campaign contributions for 2004--15 from the Database on Ideology, Money in Politics, and Elections (DIME) [@bonicadime2016]; and (3) a Favoritism Risk Indicator (FRI) combining seven indicators selected from the literature: single bidding, no publication, non-competitive procedure type, non-open solicitation type, contract modifications, supplier tax haven registration, and supplier debarred.
+
+**Variables.** The dependent variables are `logValue` (logarithm of total contract value) and `CRI7_final` (composite FRI, the average of the seven favoritism indicators). The key independent variables are `isDonation` (binary donation indicator) and `logDonation` (log of total donations). The moderating variable is `agency_cat`, categorizing agencies into four independence tiers: executive departments not separate bureaus, executive departments with distinct bureaus, independent administrations, and independent commissions and regulatory commissions [@dahlstrom2021]. Models include product category, state, contracting agency, and congressional term fixed effects.
+
+**Models.** The primary empirical models examine how the effect of political donations on `CRI7_final` varies across agency types, using a two-way fixed-effects specification (`felm()`) with product, state, contracting office, and congressional term fixed effects. Standard errors are clustered at the supplier and congressional term levels. The main variable of interest is the interaction between `isDonation` and `agency_cat`, which captures how the relationship between political donations and favoritism risk varies across different types of federal agencies.
+
+*Hypothesis 3* holds that donations increase favoritism more in less independent agencies. I test this by interacting donation variables with `agency_cat`, a two-category indicator of agency independence. The table showing interaction models and the figure showing marginal effects by the four-category indicator (`agency_cat2`) are presented below.
+
+The paper tests three hypotheses: *H1* (donating to any political party increases a company's chance of being favored in federal contracting); *H2* (donating to the party in power increases favoritism more than donating to the opposition); and *H3* (donating to the party in power increases favoritism especially when agency independence is low).
+
+## Replication Results
+
+```{r fig-ahw1replicationsetup, echo=FALSE, fig.cap="Density of Donations to Majority and Opposition", fig.pos="H", fig.align="center", out.width="80%"}
+knitr::include_graphics("../fazekas-ferrali-wachs-2023-jpart/results/figure/replicationsetup.png")
+```
+
+@fig-ahw1replicationsetup plots majority-party donations against opposition-party donations for each firm-term observation. The replication looks the same as Figure 3 in the original paper. The mass of observations falls above the diagonal, indicating that most donating firms concentrate contributions toward the majority party rather than hedging across parties. The gradient darkens sharply near the majority-dominant region, consistent with Hypothesis 2 that firms strategically target the party best positioned to affect contracting outcomes.
+
+```{r ahw1t4rep, results='asis', echo=FALSE}
+cat("\\begin{table}[H]\n\\centering\n\\caption{Interaction Effects Between Agency Politicization and Donations on FRI (Hypothesis 3)}\\label{tab:ahw1t4rep}\n\\input{../fazekas-ferrali-wachs-2023-jpart/results/table/t4rep.tex}\n\\end{table}\n")
+```
+
+Table \ref{tab:ahw1t4rep} tests Hypothesis 3 by interacting `isDonation` and `logDonation` with `agency_cat`. The coefficients and clustered p-values are the same as in Table 4 of the original paper. The interaction coefficients are positive and statistically significant for cabinet-level agencies and their bureaus. The results indicate that the effect of donations on `CRI7_final` is substantially larger in agencies with less formal independence from presidential control. For independent commissions and IRCs, the base effect and interaction terms are smaller and often statistically indistinguishable from zero. The gradient in effect sizes across the models supports the theoretical prediction that partisan influence over agency appointments amplifies the returns to political contributions.
+
+```{r ahw1ta13rep, results='asis', echo=FALSE}
+cat("\\begin{table}[H]\n\\centering\n\\caption{Replication Table A13: Interaction Effects with Lagged Revenue}\\label{tab:ahw1ta13rep}\n\\input{../fazekas-ferrali-wachs-2023-jpart/results/table/ta13rep.tex}\n\\end{table}\n")
+```
+
+Table \ref{tab:ahw1ta13rep} reproduces the previous replication table with lagged firm revenue added as a control. The authors provide this table in their appendix for robustness checks, and the replication looks the same as the authors produce. The interaction patterns are substantively unchanged and the key interaction coefficients remain significant for cabinet-level agencies. This reduces concern that past firm size drives both donation capacity and contracting success.
+
+```{r fig-ahw1f4rep, echo=FALSE, fig.cap="Marginal Effect of Donations on Favoritism by Agency Politicization", fig.pos="H", fig.align="center", out.width="100%"}
+knitr::include_graphics("../fazekas-ferrali-wachs-2023-jpart/results/figure/f4rep.png")
+```
+
+@fig-ahw1f4rep plots the marginal effect of `logDonation` on `CRI7_final` by the four-category agency type (`agency_cat2`), with $95\%$ confidence intervals. The point estimates are positive and the confidence intervals exclude zero for both cabinet department categories. For independent agencies and independent commissions the estimates are near zero and statistically indistinguishable from it. The figure looks the same as Figure 4 in the original paper, and the results support the conclusion that donations have a stronger effect on favoritism risk in agencies with less formal insulation from presidential control, which is implied by Hypothesis 3.
+
+## D. Robustness Checks {#sec-approbustness}
+
+```{=latex}
+\renewcommand{\thetable}{D\arabic{table}}
+\renewcommand{\thefigure}{D\arabic{figure}}
+\setcounter{table}{0}
+\setcounter{figure}{0}
+```
+
+## Acs (2025) Extension
+
+The @acsmapping2025 validation model uses regulatory activity (final-rule page length) as the dependent variable to measure agency productivity. For this extension, I shift the dependent variable to agency outcomes from @fazekasagency2023, specifically donation and contracting outcomes, while retaining the ACS ideological distance measure as the main explanatory variable. This examines whether president-agency ideological alignment is associated with *who receives contracts* and *how politically active those contractors are*, not only with how many pages of rules are produced.
+
+This extension keeps the ACS measure of president-agency ideological distance but changes the outcome from rule production to contracting outcomes. The formal ACS regulatory-productivity model is reproduced in @eq-acsproductivity in the Acs replication section above. In the main extension models, I also add ACS-side controls for rule volume, significant rules, and review rates (`n_rules`, `n_sig_rules`, `review_rate`) so the estimated relationship is less likely to reflect simple differences in regulatory workload.
+
+**Extension 1: Logistic Regression on Donation Probability.** @acsmapping2025 finds that ideological distance between the president and an agency is associated with lower regulatory output. A possible parallel mechanism operates on the firm side: if firms anticipate that ideologically close agencies are more responsive to political pressure, they should donate when distance is small. I test this by regressing the binary donation indicator `isDonation` on `distance` using logistic regression with agency fixed effects [@gelman2025]:
+
+$$
+\operatorname{Pr}(\texttt{isDonation}_{ift} = 1) = \operatorname{logit}^{-1}(\alpha + \beta \cdot \texttt{distance}_{at} + \pi_a)
+$$
+
+where $\pi_a$ is an agency fixed effect and $\texttt{distance}_{at}$ is the ACS absolute president-agency ideological distance. A negative $\hat{\beta}$ indicates that firms donate more when the agency's ideology is close to the president, consistent with strategic targeting of politically aligned agencies. The binary nature of `isDonation` makes the negative binomial distribution from the ACS regulatory-productivity model in @eq-acsproductivity inappropriate, so logistic regression is the correct GLM for this outcome.
+
+**Extension 2: Poisson versus Negative Binomial Overdispersion Diagnostic.** Before extending the main results, I evaluate the negative binomial specification by re-estimating the ACS regulatory-productivity model in @eq-acsproductivity with a Poisson model and comparing fit using posterior predictive checks [@gelman2025]. The Poisson distribution is the nested special case of the negative binomial as the reciprocal dispersion parameter $\phi \to \infty$. For count outcomes, the Poisson model imposes $\text{sd}(y_i) = \sqrt{\text{E}(y_i)}$, which is violated whenever the data show more variance than this constraint allows. I generate 200 simulated replications $y^{\text{rep}}$ from both fitted models and compare the frequency of zero counts in replicated data to the observed distribution. A Poisson model that systematically underestimates zeros indicates overdispersion and supports the negative binomial specification in @acsmapping2025.
+
+**Extension 3: Ordered Logistic Regression on Agency Independence Tier.** @acsmapping2025 estimates ideal points for agencies that span the full range of organizational independence. A remaining question is whether ideological distance predicts where an agency falls in the four-tier agency independence hierarchy of @fazekasagency2023. I test this using ordered logistic regression, treating `agency_cat2` (1 = most independent, 4 = least independent) as an ordered categorical outcome:
+
+$$
+\operatorname{Pr}(\texttt{agency\_cat}_{a} > k) = \operatorname{logit}^{-1}(\beta \cdot \texttt{distance}_{a} - c_k), \quad k = 1, 2, 3
+$$
+
+where $c_k$ are cutpoints estimated alongside $\beta$. A negative $\hat{\beta}$ implies that agencies with greater ideological distance from the president tend to occupy more independent tiers, consistent with the institutional logic that independent agencies face less direct presidential oversight. I fit this using `MASS::polr`, which estimates $\beta$ and the cutpoints $c_k$ by maximum likelihood. This model is appropriate because the four tiers are ordered (independence is a latent continuous construct bucketed into discrete categories) but the gaps between tiers are not necessarily equal.
+
+**Explanatory Tables and Figures**
+
+```{r ahw2extvardefs, results='asis', echo=FALSE}
+cat("\\input{../acs-2025-apsr/results/table/extvardefs.tex}\n\\addtocounter{table}{-1}\\refstepcounter{table}\\label{tab:ahw2extvardefs}\n")
+```
+
+Table \ref{tab:ahw2extvardefs} defines the merged-variable design used in the extension models below. The dependent variables are now donation and contracting outcomes from @fazekasagency2023, while ACS ideological distance remains the core predictor.
+
+```{r ahw2extbuildpanel, results='asis', echo=FALSE}
+cat("\\input{../acs-2025-apsr/results/table/extbuildpanel.tex}\n\\addtocounter{table}{-1}\\refstepcounter{table}\\label{tab:ahw2extbuildpanel}\n")
+```
+
+Table \ref{tab:ahw2extbuildpanel} reports the merge coverage for the new agency-administration panel. The matched panel is the estimation sample used in the extension models.
+
+```{r ahw2extmodeltable, results='asis', echo=FALSE}
+cat("\\input{../acs-2025-apsr/results/table/extmodeltable.tex}\n\\addtocounter{table}{-1}\\refstepcounter{table}\\label{tab:ahw2extmodeltable}\n")
+```
+
+Table \ref{tab:ahw2extmodeltable} extends the ACS regulatory-productivity model in @eq-acsproductivity by replacing regulatory activity outcomes with donation and contracting outcomes from @fazekasagency2023. Columns 1 and 3 use `lm` for continuous outcomes, while columns 2 and 4 use `glm.nb` for count outcomes. A negative coefficient on `distance` implies that greater ideological distance is associated with lower donor-linked contracting intensity, conditional on rule-volume controls.
+
+```{r fig-ahw2extcoefplot, echo=FALSE, fig.cap="Distance Effect across Alternative Fazekas Outcomes", fig.pos="H", fig.align="center", out.width="100%"}
+knitr::include_graphics("../acs-2025-apsr/results/figure/extcoefplot.png")
+```
+
+@fig-ahw2extcoefplot compares the `distance` coefficient across multiple dependent-variable definitions. This directly addresses sensitivity to outcome choice, which is one of the main robustness goals for this extension.
+
+```{r fig-ahw2ext2ppc, echo=FALSE, fig.cap="Posterior Predictive Check: Proportion of Zeros in Poisson vs. Negative Binomial Replications", fig.pos="H", fig.align="center", out.width="90%"}
+knitr::include_graphics("../acs-2025-apsr/results/figure/ext2ppc.png")
+```
+
+@fig-ahw2ext2ppc compares the proportion of zeros in 200 simulated datasets from Poisson and negative binomial models to the observed zero-rate (dashed line). The Poisson model systematically underestimates the proportion of zeros, while the negative binomial model generates replications closer to the observed rate, supporting the negative binomial specification in @acsmapping2025.
+
+## Fazekas et al. (2023) Extension
+
+@fazekasagency2023 moderate the donation and favoritism relationship by agency independence, classified into four ordered tiers of formal insulation from presidential control. This framework captures meaningful structural variation but treats agencies within each tier as equivalent. Regulatory agencies, those with binding rulemaking authority over private actors, represent a distinct institutional type that the four-tier classification does not fully isolate. Because regulatory decisions directly shape the competitive environment facing firms, the expected returns to political investment are highest in agencies that can impose or waive compliance costs. The regulatory versus non-regulatory distinction thus provides a theoretically grounded alternative moderator and tests whether donation-driven favoritism concentrates specifically in agencies whose discretion carries distributional weight for donors.
+
+I extend the baseline specification by constructing a binary indicator that classifies agencies as regulatory or non-regulatory. The classification combines three matching strategies: strict matching against agency identifiers from @acsmapping2025, who estimate dynamic ideal points for US federal regulatory agencies from Clinton through Trump using an OIRA-based item response theory model; broad matching based on whether agencies issued final rules in the Federal Register during 2004 to 2015; and fuzzy string matching to resolve agencies not captured by the first two approaches. The combined indicator (`regulatory_finalmatch`) replaces the four-tier independence moderator in the baseline interaction model while retaining the original fixed-effect structure and clustering. This approach implicitly assumes that regulatory status is a meaningful and observable characteristic that firms can identify and target when allocating contributions. I also estimate (1) a difference-in-differences-in-differences (DDD) model that adds presidential party as a third dimension and (2) an event-study design around the 2009 Bush-Obama transition to examine whether donation effects in regulatory agencies vary with partisan control of the executive.
+
+The tables below describe the agency composition of @fazekasagency2023's sample by independence category and contract frequency. I examine agency coverage before estimating extension models to identify distributional imbalances across tiers and to assess how well the ACS matching procedure covers the sample [@acsmapping2025].
+
+```{r ahw1extensiondesc1, results='asis', echo=FALSE}
+cat("\\input{../fazekas-ferrali-wachs-2023-jpart/results/table/extensiondesc_1.tex}\n\\addtocounter{table}{-1}\\refstepcounter{table}\\label{tab:ahw1extensiondesc1}\n")
+```
+
+```{r ahw1extensiondesc2, results='asis', echo=FALSE}
+cat("\\input{../fazekas-ferrali-wachs-2023-jpart/results/table/extensiondesc_2.tex}\n\\addtocounter{table}{-1}\\refstepcounter{table}\\label{tab:ahw1extensiondesc2}\n")
+```
+
+```{r ahw1extensiondesc3, results='asis', echo=FALSE}
+cat("\\input{../fazekas-ferrali-wachs-2023-jpart/results/table/extensiondesc_3.tex}\n\\addtocounter{table}{-1}\\refstepcounter{table}\\label{tab:ahw1extensiondesc3}\n")
+```
+
+```{r ahw1extensiondesc4, results='asis', echo=FALSE}
+cat("\\input{../fazekas-ferrali-wachs-2023-jpart/results/table/extensiondesc_4.tex}\n\\addtocounter{table}{-1}\\refstepcounter{table}\\label{tab:ahw1extensiondesc4}\n")
+```
+
+To merge the ACS regulatory classification with the original data, I first create a one-to-one lookup table that maps each agency in the sample to its corresponding 4-level independence category. I then merge the ACS regulatory classification into the original data using agency identifiers and names, prioritizing exact matches and using fuzzy string matching for unmatched agencies. The resulting `regulatory_finalmatch` variable classifies agencies as regulatory or non-regulatory based on the combined matching procedure. Table \ref{tab:ahw1extensionsetup} reports the initial merge check.
+
+```{r ahw1extensionsetup, results='asis', echo=FALSE}
+cat("\\input{../fazekas-ferrali-wachs-2023-jpart/results/table/extensionsetup.tex}\n\\addtocounter{table}{-1}\\refstepcounter{table}\\label{tab:ahw1extensionsetup}\n")
+```
+
+The following tables provide the full audit trail for the regulatory agency classification, including the strict ACS matches, the broader Federal Register matches, and the fuzzy-match candidates among unmatched agencies.
+
+```{r ahw1regulatorymatch1, results='asis', echo=FALSE}
+cat("\\input{../fazekas-ferrali-wachs-2023-jpart/results/table/regulatorymatch_1.tex}\n\\addtocounter{table}{-1}\\refstepcounter{table}\\label{tab:ahw1regulatorymatch1}\n")
+```
+
+```{r ahw1regulatorymatch2, results='asis', echo=FALSE}
+cat("\\input{../fazekas-ferrali-wachs-2023-jpart/results/table/regulatorymatch_2.tex}\n\\addtocounter{table}{-1}\\refstepcounter{table}\\label{tab:ahw1regulatorymatch2}\n")
+```
+
+```{r ahw1regulatorymatch3, results='asis', echo=FALSE}
+cat("\\input{../fazekas-ferrali-wachs-2023-jpart/results/table/regulatorymatch_3.tex}\n\\addtocounter{table}{-1}\\refstepcounter{table}\\label{tab:ahw1regulatorymatch3}\n")
+```
+
+```{r ahw1regulatorymatch4, results='asis', echo=FALSE}
+cat("\\input{../fazekas-ferrali-wachs-2023-jpart/results/table/regulatorymatch_4.tex}\n\\addtocounter{table}{-1}\\refstepcounter{table}\\label{tab:ahw1regulatorymatch4}\n")
+```
+
+\FloatBarrier
+
+Table \ref{tab:ahw1regfinalmatch} reports the final match coverage combining strict, broad, and fuzzy matching strategies into the `regulatory_finalmatch` indicator used in the extension models.
+
+```{r ahw1regfinalmatch, results='asis', echo=FALSE}
+cat("\\input{../fazekas-ferrali-wachs-2023-jpart/results/table/regfinalmatch.tex}\n\\addtocounter{table}{-1}\\refstepcounter{table}\\label{tab:ahw1regfinalmatch}\n")
+```
+
+\newpage

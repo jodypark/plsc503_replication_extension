@@ -1,0 +1,168 @@
+% Set the slide aspect ratio to 16:9 without using \documentclass
+%\PassOptionsToClass{aspectratio=169}{beamer}
+% \usepackage[size=custom,width=16,height=9,scale=0.45]{beamerposter}
+
+% --- visual tweaks ---
+\makeatletter
+\AtBeginDocument{%
+  % hard-indented frametitle bar
+  \defbeamertemplate*{frametitle}{indentleft}{%
+    \nointerlineskip
+    \vskip1ex
+    \begin{beamercolorbox}[wd=\paperwidth,sep=0pt,leftskip=0.9em,rightskip=1em]{frametitle}
+      \usebeamerfont{frametitle}\strut\insertframetitle\strut
+    \end{beamercolorbox}%
+  }%
+  \setbeamertemplate{frametitle}[indentleft]%
+}
+\makeatother
+
+% content margins
+\setbeamersize{text margin left=1.2em, text margin right=1.2em}
+
+% --- citation size globally --- (tiny)
+\let\oldcite\cite
+\renewcommand{\cite}[1]{{\scriptsize\oldcite{#1}}}
+
+
+\setbeamertemplate{navigation symbols}{}
+\institute[Penn State]{\fontsize{12}{10} Penn State University\\ jodypark@psu.edu}
+
+\setbeamerfont{author in head/foot}{size=\tiny}
+\setbeamerfont{title in head/foot}{size=\tiny}
+\setbeamerfont{date in head/foot}{size=\tiny}
+
+
+% Set Ratio to 16:9 for frametitle box
+% Adjust title box to fill the width, ensuring no left padding
+\setbeamertemplate{frametitle}{
+  \vspace{0pt} % Adjust the space between the top and title text
+  \nointerlineskip
+  \hbox{\begin{beamercolorbox}[wd=\paperwidth,ht=3.05ex,dp=1ex,leftskip=0cm,rightskip=0.3cm]{frametitle}
+  \usebeamerfont{frametitle}\insertframetitle\par
+  \end{beamercolorbox}}
+  \vskip0pt % Adjust the space below the title
+}
+
+
+% Setup the footline of each slide.
+% This requires R code output to have out.height="85%", so that the graphs won't be truncated by the footnote of each slide.
+% Code source: https://tex.stackexchange.com/questions/51665/appearance-of-the-name-of-the-author-in-beamer
+%\setbeamertemplate{footline}{%
+ % \leavevmode%
+ % \hbox{%
+ % \begin{beamercolorbox}[wd=.333333\paperwidth,ht=3.05ex,dp=1ex,center]{author in head/foot}%
+  %  \usebeamerfont{author in head/foot}\insertauthor
+ % \end{beamercolorbox}%
+  %\begin{beamercolorbox}[wd=.333333\paperwidth,ht=3.05ex,dp=1ex,center]{title in head/foot}%
+  %  \usebeamerfont{title in head/foot}\insertshortinstitute
+  %\end{beamercolorbox}%
+  %\begin{beamercolorbox}[wd=.333333\paperwidth,ht=3.05ex,dp=1ex,right]{date in head/foot}%
+   % \usebeamerfont{date in head/foot}\ October 21, 2025\hspace*{2em}
+    %\insertframenumber{} \hspace*{2ex} 
+  %\end{beamercolorbox}}%
+ % \vskip0pt%
+%}
+
+
+% --- Custom footline with author | course | date + page x/y ---
+\setbeamertemplate{footline}{%
+  \leavevmode%
+  \hbox{%
+    % Left: Author name
+    \begin{beamercolorbox}[wd=.333333\paperwidth,ht=3.05ex,dp=1ex,center]{author in head/foot}%
+      \usebeamerfont{author in head/foot}\insertauthor
+    \end{beamercolorbox}%
+    % Middle: Course/institute
+    \begin{beamercolorbox}[wd=.333333\paperwidth,ht=3.05ex,dp=1ex,center]{title in head/foot}%
+      \usebeamerfont{title in head/foot}\insertshortinstitute
+    \end{beamercolorbox}%
+    % Right: Date and slide number x/y
+    \begin{beamercolorbox}[wd=.333333\paperwidth,ht=3.05ex,dp=1ex,right]{date in head/foot}%
+      \usebeamerfont{date in head/foot}%
+      May 4, 2026\hspace*{2em}%
+      \insertframenumber{}/\inserttotalframenumber\hspace*{2ex}%
+    \end{beamercolorbox}%
+  }%
+  \vskip0pt%
+}
+
+
+% Set all figures un-numbered
+\usepackage{caption}
+\captionsetup[figure]{labelformat=empty}
+
+% Section Title Slide
+\AtBeginSection[]{
+  \begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}\insertsectionhead\par%
+  \end{beamercolorbox}
+  \vfill 
+  \end{frame}
+}
+
+% For LaTeX tables
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{pifont}
+\usepackage{caption}
+\usepackage{graphicx}
+
+
+% Two-Column Layouts
+\def\begincols{\begin{columns}}
+\def\begincol{\begin{column}}
+\def\endcol{\end{column}}
+\def\endcols{\end{columns}}
+
+% color
+ %==== Penn State Beamer Theme — White BG, Navy Titles, Custom Footline ====
+
+% ===== PSU color skin (keep Boadilla look & your layout) =====
+% Define PSU colors
+%\definecolor{psuNavy}{HTML}{001E44}      % dark navy
+%\definecolor{psuBlue}{HTML}{1E6BD6}      % mid blue
+%\definecolor{psuLightBlue}{HTML}{5A90E8} % light blue (right foot segment)
+
+% Global background & body text
+%\setbeamercolor{background canvas}{bg=white}
+%setbeamercolor{normal text}{fg=black,bg=white}
+
+% Frametitiles / title bar in PSU navy with white text
+%\setbeamercolor{frametitle}{bg=psuNavy, fg=white}
+%\setbeamercolor{title}{bg=psuNavy, fg=white}
+
+% Section-page slide (you already use \begin{beamercolorbox}{title} there)
+%\setbeamercolor{section title}{bg=psuNavy, fg=white}  % used by your \AtBeginSection beamercolorbox{title}
+%\setbeamercolor{section in toc}{fg=psuNavy}
+
+% No other colored boxes (blocks/items stay black on white)
+%\setbeamercolor{block title}{bg=white, fg=black}
+%\setbeamercolor{block body}{bg=white, fg=black}
+%\setbeamercolor{item}{fg=black}
+%\setbeamercolor{caption name}{fg=black}
+
+% Link colors (keep subtle; body remains black)
+%\hypersetup{colorlinks=true, linkcolor=psuNavy, urlcolor=psuNavy, citecolor=psuNavy}
+
+% ===== Footline colors (match your existing footline template names) =====
+% left box = author, middle = institute, right = date/page
+%\setbeamercolor{author in head/foot}{bg=psuNavy,     fg=white}
+%\setbeamercolor{title in head/foot}{ bg=psuBlue,     fg=white}
+%\setbeamercolor{date in head/foot}{  bg=psuLightBlue,fg=black}

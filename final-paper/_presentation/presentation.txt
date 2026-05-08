@@ -1,0 +1,42 @@
+
+## Memo (will be deleted)
+
+- overview of the research: 
+  - Agency ideology shapes the degree of favoritism toward politically connected firms, with more conservative agencies exhibiting stronger favoritism toward firms donating to the Republican Party
+  - Together, these findings suggest that the politics of
+federal contracting is shaped not just by formal institutional structure (i.e., the agency independence-tier
+classification), but by the continuous ideological alignment between agencies and the political executive
+
+- hypotheses
+  - H1: (e.g., more conservative agencies show stronger favoritism toward Republican donors)
+
+- equations
+   - The key parameter of interest is $\beta_2$. Under the *amplification hypothesis*, $\beta_2 > 0$ (larger ideological distance reduces the donation-favoritism effect; smaller distance amplifies it)
+   - Under the *insulation hypothesis*, $\beta_2 < 0$ or the relationship is non-monotonic.
+   - A negative $\hat{\beta}$ indicates that firms donate more when the agency's ideology is close to the president, consistent with strategic targeting of politically aligned agencies.
+
+- OIRA: Office of Information and Regulatory Affairs
+- Mechanism: \begingroup\scriptsize Not just by formal institutional structure, but by continuous, administration-specific ideological alignment between agencies and the political executive\endgroup
+- \begingroup\scriptsize Donations $\times$ agency moderator $\rightarrow$ Favored contracting\endgroup 
+
+
+---
+
+
+make minimal change
+do not change the main content, unless there is a significant error in interpretation
+double check paragraphs and the results from the tables and figures. they have to match
+writing and coding style: keep them the same as the current version. PLSC top journal writing style (APSR) , and caltech writing. 
+
+writing styles: 
+
+- APSR journal articles
+- example APSR writing style: '/Users/jodypark/Library/CloudStorage/Dropbox/Penn State/2026 Spring/PLSC503 Multivariate Analysis PLSC Research/replication extension/guidelines/doucette-2025-apsr-letter-what-can-we-learn-effects-democracy-using-crossnationaldata.pdf'
+- caltech writing rule: '/Users/jodypark/Library/CloudStorage/Dropbox/Penn State/reading/writing/weingast-1995-Caltech Rules For Writing Papers.pdf'
+- PLSC writing: '/Users/jodypark/Library/CloudStorage/Dropbox/Penn State/reading/writing/William Strunk Jr., E. B. White, Test Editor (editor) - The Elements of Style, Fourth Edition (1999, Pearson) - libgen.li.pdf'
+
+
+coding styles:
+same as my current codes. especially for the visualisation (ggplot and tex tables.. etc.)
+
+

@@ -55,12 +55,13 @@ header-includes:
 ---
 
 ```{r setup, include=FALSE}
+options(knitr.table.format = "latex")
 knitr::opts_chunk$set(
                       fig.width = 9, fig.height = 7, fig.retina = 3,
                       out.width = "100%",
                       cache = FALSE,
                       echo = TRUE,
-                      message = FALSE, 
+                      message = FALSE,
                       warning = FALSE,
                       hiline = TRUE
                       )
@@ -298,6 +299,7 @@ t0 <- knitr::kable(key_vars, format = "latex", caption = "Key Variables",
                 latex_options = c("hold_position"))
 
 t0
+t0 %>% save_kable("results/table/keyvar.tex")
 
 ```
 
@@ -448,6 +450,7 @@ desctable <- knitr::kable(desc_tab,
   )
 
 desctable
+desctable %>% save_kable("results/table/descriptive.tex")
 
 ```
 
@@ -636,7 +639,7 @@ mms(
     )
 ) %>%
     add_header_above(c(" " = 1, "Favoritism Risk Index (FRI)" = 4)) %>%
-    save_kable("./tables/h1Match.tex")
+    save_kable("results/table/h1Match.tex")
 
 mods$h1$bFirm$thresh <- mods$h1$bFirm$baseMatch <- mods$h1$bFirm$triMatch <- NULL
 
@@ -664,6 +667,7 @@ df %>%
         x = "Donation to maj.",
         y = "Donation to opp."
     )
+ggsave("results/figure/replicationsetup.png", height = 4, width = 5, dpi = 300)
 
 # if (eps) ggsave("figures/h2Density.eps", height = 4, width = 5, units = "in")
 # if (pdf) ggsave("figures/h2Density.pdf", height = 4, width = 5, units = "in")
@@ -744,7 +748,7 @@ mods$h3$nofe$contpres <- update(baselineH1, . ~ . + giveAbs + agency_cat + giveA
 mods$h3$nofe$binpres <- update(baselineH1, . ~ . - isDonation + giveAbsBin + agency_cat + giveAbsBin:agency_cat)
 
 t4_table <- tableH3(mods$h3$nofe)
-t4_table %>% save_kable("./tables/h3.tex")
+t4_table %>% save_kable("results/table/t4rep.tex")
 if (is.character(t4_table)) cat(t4_table, sep = "\n") else t4_table
 
 ```
@@ -776,7 +780,7 @@ mods$h1$robLagRev <- map(mods$h1$bFirm, ~ update(., . ~ . + rev))
 
 mods$h3$robLagRev <- map(mods$h3$nofe, ~ update(., . ~ . + rev))
 tA13_table <- tableH3(mods$h3$robLagRev)
-tA13_table %>% save_kable("./tables/h3robLagRev.tex")
+tA13_table %>% save_kable("results/table/ta13rep.tex")
 if (is.character(tA13_table)) cat(tA13_table, sep = "\n") else tA13_table
 
 ```
@@ -837,7 +841,8 @@ ggplot(pl, aes(x = donation, y = pe, ymin = LB, ymax = UB)) +
     labs(
         x = "Agency type",
         y = "Marginal effect of Log donation on FRI"
-    ) 
+    )
+ggsave("results/figure/f4rep.png", width = 8, height = 5, dpi = 300)
 
 ```
 
@@ -1038,6 +1043,10 @@ t4agencydist <- knitr::kable(
   )
 
 t4agencydist
+t1agency %>% save_kable("results/table/extensiondesc_1.tex")
+t2agency %>% save_kable("results/table/extensiondesc_2.tex")
+t3agency %>% save_kable("results/table/extensiondesc_3.tex")
+t4agencydist %>% save_kable("results/table/extensiondesc_4.tex")
 
 ```
 
@@ -1179,7 +1188,7 @@ regulatory_merge_check <- df_extension %>%
     pct_obs_regulatory = mean(regulatory) * 100
   )
 
-knitr::kable(regulatory_merge_check,
+ext_setup_kbl <- knitr::kable(regulatory_merge_check,
              booktabs = TRUE,
              format = "latex",
              caption = "ACS (2025) Merge Check and Regulatory Dummy Coverage") %>%
@@ -1188,7 +1197,8 @@ knitr::kable(regulatory_merge_check,
     position = "center",
     latex_options = c("hold_position")
   )
-
+ext_setup_kbl
+ext_setup_kbl %>% save_kable("results/table/extensionsetup.tex")
 
 
 # check regulatory variable
@@ -1340,15 +1350,15 @@ if (nrow(audit_unmatched) > 0 && nrow(regulatory_reference_broad) > 0) {
 
 # 6) export full list + audit outputs
 write_csv(regulatory_reference_full,
-          "./tables/regulatory_reference_full_2004_2015.csv")
+          "results/table/regulatory_reference_full_2004_2015.csv")
 write_csv(audit_matched_acs,
-          "./tables/regulatory_audit_matched_acs.csv")
+          "results/table/regulatory_audit_matched_acs.csv")
 write_csv(audit_broad_not_strict,
-          "./tables/regulatory_audit_broad_not_strict.csv")
+          "results/table/regulatory_audit_broad_not_strict.csv")
 write_csv(audit_unmatched,
-          "./tables/regulatory_audit_unmatched.csv")
+          "results/table/regulatory_audit_unmatched.csv")
 write_csv(audit_fuzzy_candidates,
-          "./tables/regulatory_audit_fuzzy_candidates.csv")
+          "results/table/regulatory_audit_fuzzy_candidates.csv")
 
 # 7) compact diagnostics
 audit_summary <- tibble(
@@ -1375,7 +1385,7 @@ audit_summary <- tibble(
 
 ```{r regulatorymatch, echo = FALSE, warning = FALSE, error = FALSE, message = FALSE, results='asis', tab.pos="H", tab.align="center", tab.cap = "Regulatory agency audit", out.width = "100%"}
 
-knitr::kable(
+rm_kbl1 <- knitr::kable(
   audit_summary,
   booktabs = TRUE,
   longtable = FALSE,
@@ -1386,10 +1396,11 @@ knitr::kable(
     full_width = FALSE,
     position = "center",
     latex_options = c("hold_position")
-  ) 
+  )
+rm_kbl1
 
 
-knitr::kable(
+rm_kbl2 <- knitr::kable(
   head(audit_broad_not_strict, 10),
   booktabs = TRUE,
   format = "latex",
@@ -1400,10 +1411,11 @@ knitr::kable(
     position = "center",
     latex_options = c("hold_position", "scale_down"),
     font_size = 10
-  ) 
+  )
+rm_kbl2
 
 
-knitr::kable(
+rm_kbl3 <- knitr::kable(
   head(audit_fuzzy_candidates, 10),
   booktabs = TRUE,
   format = "latex",
@@ -1417,9 +1429,10 @@ knitr::kable(
     position = "center",
     latex_options = c("hold_position", "scale_down"),
     font_size = 10
-  ) 
+  )
+rm_kbl3
 
-knitr::kable(
+rm_kbl4 <- knitr::kable(
   head(regulatory_reference_full, 10),
   booktabs = TRUE,
   format = "latex",
@@ -1430,7 +1443,13 @@ knitr::kable(
     position = "center",
     latex_options = c("hold_position", "scale_down"),
     font_size = 10
-  ) 
+  )
+rm_kbl4
+
+rm_kbl1 %>% save_kable("results/table/regulatorymatch_1.tex")
+rm_kbl2 %>% save_kable("results/table/regulatorymatch_2.tex")
+rm_kbl3 %>% save_kable("results/table/regulatorymatch_3.tex")
+rm_kbl4 %>% save_kable("results/table/regulatorymatch_4.tex")
 
 ```
 
@@ -1470,7 +1489,7 @@ regulatory_finalmatch_check <- df_extension_final %>%
   )
 
 # 4) final match table
-knitr::kable(
+regfin_kbl <- knitr::kable(
   regulatory_finalmatch_check,
   booktabs = TRUE,
   format = "latex",
@@ -1480,7 +1499,9 @@ knitr::kable(
     full_width = FALSE,
     position = "center",
     latex_options = c("hold_position")
-  ) 
+  )
+regfin_kbl
+regfin_kbl %>% save_kable("results/table/regfinalmatch.tex")
 
 # 4-2) export final dataset for extension analysis
 write_csv(df_extension_final, "./df_extension_finalmatch_fazekas-acs.csv")
@@ -1574,7 +1595,7 @@ tableH3_reg_kbl <- function(models,
     stars = TRUE,
     gof_omit = "Std|R2 Adj.|AIC|BIC|Log.Lik.|F|RMSE",
     gof_map = c("nobs", "r.squared"),
-    output = "kableExtra",
+    output = "latex",
     title = caption_text,
     escape = FALSE
   ) %>%
@@ -1591,7 +1612,7 @@ t4ext_reg_table <- tableH3_reg_kbl(
   caption_text = "Extension Table 4: Regulatory match and donations on FRI"
 )
 
-t4ext_reg_table %>% save_kable("./tables/h3_regfinal.tex") 
+t4ext_reg_table %>% save_kable("results/table/t4extregfinal.tex")
 t4ext_reg_table
 
 
@@ -1635,7 +1656,7 @@ tA13ext_reg_table <- tableH3_reg_kbl(
 )
 
 # table a13 extension
-tA13ext_reg_table %>% save_kable("./tables/h3_regfinal_lagrev.tex")
+tA13ext_reg_table %>% save_kable("results/table/ta13extregfinal.tex")
 tA13ext_reg_table
 
 ```
@@ -1688,6 +1709,7 @@ ggplot(pl, aes(x = regulatory, y = pe, ymin = LB, ymax = UB)) +
     x = "Agency group",
     y = "Marginal effect of Log donation on FRI"
   )
+ggsave("results/figure/f4extregfinal.png", width = 8, height = 5, dpi = 300)
 
 ```
 
@@ -1758,13 +1780,14 @@ t_ddd <- modelsummary(
   stars = TRUE,
   gof_omit = "Std|R2 Adj.|AIC|BIC|Log.Lik.|F|RMSE",
   gof_map = c("nobs", "r.squared"),
-  output = "kableExtra",
+  output = "latex",
   title = "DDD: Donation effects by regulatory status and presidency"
 ) %>%
   add_header_above(c(" " = 1, "Favoritism Risk Index (FRI)" = 2), escape = FALSE) %>%
   kable_styling(latex_options = c("hold_position"), position = "center")
 
 t_ddd
+t_ddd %>% save_kable("results/table/regddd.tex")
 
 ```
 
@@ -1827,6 +1850,7 @@ ggplot(event_coefs, aes(x = event_time, y = estimate,
     x = "Event time (years relative to 2009; -1 is omitted reference)",
     y = "Differential effect: Donation x Regulatory"
   )
+ggsave("results/figure/regeventstudy.png", width = 8, height = 5, dpi = 300)
 
 ```
 
@@ -1873,7 +1897,7 @@ if (length(lead_terms) > 0) {
 pretrend_tab <- pretrend_tab %>%
   mutate(`p-value` = sprintf("%.4f", `p-value`))
 
-knitr::kable(
+pretrend_kbl <- knitr::kable(
   pretrend_tab,
   booktabs = TRUE,
   format = "latex",
@@ -1884,6 +1908,8 @@ knitr::kable(
     full_width = FALSE,
     position = "center",
     latex_options = c("hold_position"))
+pretrend_kbl
+pretrend_kbl %>% save_kable("results/table/regeventstudypretrend.tex")
 
 ```
 
