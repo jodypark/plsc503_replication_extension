@@ -25,7 +25,6 @@ Federal contracting, worth more than \$700 billion annually, is systematically s
   - [GitHub repository for this project](https://github.com/jodypark/plsc503_replication_extension_fazekas2023/tree/main/acs-2025-apsr)
 
 
-
 ### Fazekas et al. (2023)
 
 - **Original Paper**: Fazekas, M., Ferrali, R., & Wachs, J. (2023). Agency Independence, Campaign Contributions, and Favoritism in US Federal Government Contracting. Journal of Public Administration Research and Theory, 33(2), 262-278.
