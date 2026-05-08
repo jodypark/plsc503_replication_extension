@@ -1,4 +1,4 @@
-# plsc503_replication_extension_fazekas2023
+# plsc503_replication_extension
 
 This repository contains the code and data for the replication and extension of Acs (2025) and Fazekas et al. (2023) for the final project of PLSC 503 (Instructor: Professor Bruce A. Desmarais). 
 
