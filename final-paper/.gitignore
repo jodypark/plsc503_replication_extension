@@ -1,6 +1,7 @@
 .DS_Store
 .quarto/
-_output/
+_output/*
+!_output/*.pdf
 *_files/
 *.log
 *.aux
