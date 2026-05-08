@@ -24,7 +24,7 @@ Federal contracting, worth more than \$700 billion annually, is systematically s
 
   - [GitHub repository for this project](https://github.com/jodypark/plsc503_replication_extension_fazekas2023/tree/main/acs-2025-apsr)
 
-\bigskip
+
 
 ### Fazekas et al. (2023)
 
